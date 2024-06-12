@@ -96,9 +96,9 @@ const NodeFormSheet = () => {
     defaultValues: {
       nodeType: parsedData?.nodeType,
       nodeTitle: parsedData?.nodeTitle,
-      score: parsedData.score || "",
-      contactType: parsedData.contactType || [],
-      message: parsedData.nodeDescription,
+      score: parsedData?.score || "",
+      contactType: parsedData?.contactType || [],
+      message: parsedData?.isConfigured ? parsedData.nodeDescription : "",
     },
   });
 
