@@ -8,7 +8,7 @@ import NodeFormSheet from "./node-form-sheet";
 import { Button } from "../ui/button";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { TelevoxIcon } from "./days-flow-icons";
-import { downloadJsonFile } from "./days-flow-constants";
+import { downloadJsonFile, isSomething } from "./days-flow-constants";
 import FlowNew from "./flow-new";
 
 const DaysFlow = () => {
@@ -30,9 +30,10 @@ const DaysFlow = () => {
   return (
     <>
       <div
-        className={`h-[40px] flex flex-row justify-between items-center p-4 bg-white z-10 fixed top-0 w-full ${
-          nodeAtomId && "w-[79%] rounded-r-xl"
-        }`}
+        className={`h-[40px] flex flex-row justify-between items-center p-4 bg-white z-10 fixed top-0 w-full  
+          ${isSomething(nodeAtomId) && "w-[79%] rounded-r-xl"}
+        `}
+        style={{ width: nodeAtomId ? "79%" : "100%" }}
       >
         <TelevoxIcon />
 

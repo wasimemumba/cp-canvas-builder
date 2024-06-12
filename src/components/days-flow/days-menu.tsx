@@ -1,5 +1,6 @@
 import {
   daysWorkflowDataAtom,
+  nodeIdAtom,
   redoAtom,
   selectedDayAtom,
   undoAtom,
@@ -19,6 +20,7 @@ const DaysMenu = () => {
   const setDaysWorkflow = useSetAtom(selectedDayAtom);
   const setUndo = useSetAtom(undoAtom);
   const setRedo = useSetAtom(redoAtom);
+  const setAtomId = useSetAtom(nodeIdAtom);
   return (
     <Menubar asChild>
       <MenubarMenu>
@@ -35,6 +37,7 @@ const DaysMenu = () => {
                 setDaysWorkflow(daywork?.day?.id);
                 setUndo([]);
                 setRedo([]);
+                setAtomId(null);
               }}
             >
               Day {daywork?.day?.dayValue}

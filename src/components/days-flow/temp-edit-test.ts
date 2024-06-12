@@ -1,4 +1,4 @@
-import { Edge } from "reactflow";
+import { Edge, Position } from "reactflow";
 import { DAYS_FLOW_DATA } from "./days-flow.types";
 
 export const editTest: DAYS_FLOW_DATA[] = [
@@ -9,9 +9,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
       workflow: [
         {
           id: "a8cfd02a-cd07-44b5-9959-e4c41cbf9f0d",
-          nodeType: "initialNode",
+          // nodeType: "initialNode",
           data: '{"nodeType":"initialNode","nodeTitle":"Dialogue Start","score":"2","contactType":["sms"],"message":"Starting Node","nodeIcon":"dialogue","nodeDescription":"Starting Node","handle":"source","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 225,
             y: 0,
@@ -25,14 +25,14 @@ export const editTest: DAYS_FLOW_DATA[] = [
             y: 0,
           },
           dragging: false,
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
         },
         {
           id: "d4791444-1bbf-41c6-8c73-448dfb55095d",
-          nodeType: "questionnareNode",
+          // nodeType: "questionnareNode",
           data: '{"nodeIcon":"question","nodeTitle":"Questionnaire Node","nodeDescription":"Select a survey template to send to the Patient via SMS/Email","nodeType":"questionnareNode","handle":"both"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 0,
             y: 250,
@@ -42,8 +42,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 0,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -51,9 +51,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "24d1a06f-414c-4c77-921c-9320f7a478c9",
-          nodeType: "messagePatientNode",
+          // nodeType: "messagePatientNode",
           data: '{"nodeType":"messagePatientNode","nodeTitle":"Message Node","score":"2","contactType":["sms"],"message":"sdsda","nodeIcon":"message","nodeDescription":"sdsda","handle":"both","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 450,
             y: 250,
@@ -63,8 +63,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 450,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -72,9 +72,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "313028fd-143f-400d-9c6e-cec8263e1dcf",
-          nodeType: "liveChatNode",
+          // nodeType: "liveChatNode",
           data: '{"nodeIcon":"chat","nodeTitle":"Chat Node","nodeDescription":"Start a Live chat with patient","nodeType":"liveChatNode","handle":"target"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 0,
             y: 500,
@@ -84,8 +84,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 0,
             y: 500,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -93,9 +93,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "1b796dc8-77f0-43d0-a04f-901eaa9f6411",
-          nodeType: "messagePatientNode",
+          // nodeType: "messagePatientNode",
           data: '{"nodeType":"messagePatientNode","nodeTitle":"Patient 1","score":"2","contactType":["sms"],"message":"sdsadada","nodeIcon":"message","nodeDescription":"sdsadada","handle":"both","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 450,
             y: 500,
@@ -105,8 +105,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 450,
             y: 500,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -114,9 +114,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "814f093f-723b-4c02-a810-fb1e16b47156",
-          nodeType: "messagePatientNode",
+          // nodeType: "messagePatientNode",
           data: '{"nodeIcon":"message","nodeTitle":"Patient 2","nodeDescription":"Send an SMS, IVR or Email message to the Patient","nodeType":"messagePatientNode","handle":"both"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 900,
             y: 500,
@@ -126,8 +126,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 900,
             y: 500,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: true,
@@ -143,9 +143,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
       workflow: [
         {
           id: "86827c2e-04e6-4a6b-b398-dfec058cd1b8",
-          nodeType: "initialNode",
+          // nodeType: "initialNode",
           data: '{"nodeType":"initialNode","nodeTitle":"Dialogue Start","score":"2","contactType":["sms"],"message":"wqwqw","nodeIcon":"dialogue","nodeDescription":"wqwqw","handle":"source","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 225,
             y: 0,
@@ -159,14 +159,14 @@ export const editTest: DAYS_FLOW_DATA[] = [
             y: 0,
           },
           dragging: false,
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
         },
         {
           id: "e6baf6fa-e8e1-4756-bca1-ea29a1947f8b",
-          nodeType: "questionnareNode",
+          // nodeType: "questionnareNode",
           data: '{"nodeIcon":"question","nodeTitle":"adasdsad","nodeDescription":"Select a survey template to send to the Patient via SMS/Email","nodeType":"questionnareNode","handle":"both"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 0,
             y: 250,
@@ -176,8 +176,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 0,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -185,9 +185,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "3c76a241-9ea0-4c59-8305-aaa795e1d32f",
-          nodeType: "liveChatNode",
+          // nodeType: "liveChatNode",
           data: '{"nodeIcon":"chat","nodeTitle":"adasdasd","nodeDescription":"Start a Live chat with patient","nodeType":"liveChatNode","handle":"target"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 450,
             y: 250,
@@ -197,8 +197,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 450,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: true,
@@ -215,9 +215,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
       workflow: [
         {
           id: "77442481-3970-4f9d-9153-b3f9a01d1a00",
-          nodeType: "initialNode",
+          // nodeType: "initialNode",
           data: '{"nodeType":"initialNode","nodeTitle":"Dialogue Start","score":"4","contactType":["sms"],"message":"sdsadasd","nodeIcon":"dialogue","nodeDescription":"sdsadasd","handle":"source","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 200,
             y: 0,
@@ -231,14 +231,14 @@ export const editTest: DAYS_FLOW_DATA[] = [
             y: 0,
           },
           dragging: false,
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
         },
         {
           id: "fe808f19-6940-4c69-bbb5-c570870131ea",
-          nodeType: "liveChatNode",
+          // nodeType: "liveChatNode",
           data: '{"nodeIcon":"chat","nodeTitle":"sadsadas","nodeDescription":"Start a Live chat with patient","nodeType":"liveChatNode","handle":"target"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 0,
             y: 250,
@@ -248,8 +248,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 0,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -257,9 +257,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "2f2b8910-0af3-437a-b1d2-fbf0da230aed",
-          nodeType: "questionnareNode",
+          // nodeType: "questionnareNode",
           data: '{"nodeType":"questionnareNode","nodeTitle":"dasdasd","score":"2","contactType":["sms"],"message":"dasd","nodeIcon":"question","nodeDescription":"dasd","handle":"both","isConfigured":true}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 450,
             y: 250,
@@ -269,8 +269,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 450,
             y: 250,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: false,
@@ -278,9 +278,9 @@ export const editTest: DAYS_FLOW_DATA[] = [
         },
         {
           id: "e1587d23-1328-47a6-b7c7-d167f319e801",
-          nodeType: "liveChatNode",
+          // nodeType: "liveChatNode",
           data: '{"nodeIcon":"chat","nodeTitle":"sdsadas","nodeDescription":"Start a Live chat with patient","nodeType":"liveChatNode","handle":"target"}',
-          undoType: "added",
+          // undoType: "added",
           position: {
             x: 450,
             y: 500,
@@ -290,8 +290,8 @@ export const editTest: DAYS_FLOW_DATA[] = [
             x: 450,
             y: 500,
           },
-          targetPosition: "top",
-          sourcePosition: "bottom",
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom,
           width: 350,
           height: 74,
           selected: true,
@@ -309,7 +309,7 @@ export const edgesEdit: Edge[] = [
     source: "a8cfd02a-cd07-44b5-9959-e4c41cbf9f0d",
     target: "d4791444-1bbf-41c6-8c73-448dfb55095d",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -317,7 +317,7 @@ export const edgesEdit: Edge[] = [
     source: "a8cfd02a-cd07-44b5-9959-e4c41cbf9f0d",
     target: "24d1a06f-414c-4c77-921c-9320f7a478c9",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -325,7 +325,7 @@ export const edgesEdit: Edge[] = [
     source: "24d1a06f-414c-4c77-921c-9320f7a478c9",
     target: "313028fd-143f-400d-9c6e-cec8263e1dcf",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -333,7 +333,7 @@ export const edgesEdit: Edge[] = [
     source: "24d1a06f-414c-4c77-921c-9320f7a478c9",
     target: "1b796dc8-77f0-43d0-a04f-901eaa9f6411",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -341,7 +341,7 @@ export const edgesEdit: Edge[] = [
     source: "24d1a06f-414c-4c77-921c-9320f7a478c9",
     target: "814f093f-723b-4c02-a810-fb1e16b47156",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -349,7 +349,7 @@ export const edgesEdit: Edge[] = [
     source: "86827c2e-04e6-4a6b-b398-dfec058cd1b8",
     target: "e6baf6fa-e8e1-4756-bca1-ea29a1947f8b",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -357,7 +357,7 @@ export const edgesEdit: Edge[] = [
     source: "86827c2e-04e6-4a6b-b398-dfec058cd1b8",
     target: "3c76a241-9ea0-4c59-8305-aaa795e1d32f",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -365,7 +365,7 @@ export const edgesEdit: Edge[] = [
     source: "77442481-3970-4f9d-9153-b3f9a01d1a00",
     target: "fe808f19-6940-4c69-bbb5-c570870131ea",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -373,7 +373,7 @@ export const edgesEdit: Edge[] = [
     source: "77442481-3970-4f9d-9153-b3f9a01d1a00",
     target: "2f2b8910-0af3-437a-b1d2-fbf0da230aed",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
   {
     animated: false,
@@ -381,6 +381,6 @@ export const edgesEdit: Edge[] = [
     source: "2f2b8910-0af3-437a-b1d2-fbf0da230aed",
     target: "e1587d23-1328-47a6-b7c7-d167f319e801",
     type: "buttonEdge",
-    undoType: "added",
+    // undoType: "added",
   },
 ];
