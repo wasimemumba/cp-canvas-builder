@@ -418,7 +418,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
             )}
           </div>
 
-          {!isConfigured && (
+          {!isConfigured && currentView === "detailed" && (
             <p className="text-xs text-[#BEBFC0]">Click to configure node</p>
           )}
 
