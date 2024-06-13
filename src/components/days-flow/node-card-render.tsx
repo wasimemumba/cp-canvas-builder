@@ -5,6 +5,7 @@ import {
   addEdge,
   useOnSelectionChange,
   useReactFlow,
+  Node,
 } from "reactflow";
 import {
   NODES_WITH_TYPE_RENDERED,
@@ -104,8 +105,8 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
     contactType,
   } = parsedData;
 
-  useOnSelectionChange({
-    onChange: ({ nodes }) => {
+  const onChangeSelection = useCallback(
+    ({ nodes }: { nodes: Node[] }) => {
       const nodeId = nodes?.map((node) => node?.id);
       if (!newelyAddedNodeId) {
         setAtomId(nodeId && nodeId[0]);
@@ -115,6 +116,11 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
         setNewlyAddedNodeId("");
       }
     },
+    [newelyAddedNodeId, setAtomId, setNewlyAddedNodeId]
+  );
+
+  useOnSelectionChange({
+    onChange: onChangeSelection,
   });
 
   const onNodeDelete = () => {
