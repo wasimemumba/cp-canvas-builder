@@ -213,8 +213,8 @@ const NodeFormSheet = () => {
               name="nodeType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-[#2A2D2E]">
-                    Node Type
+                  <FormLabel className="flex flex-row gap-1 text-sm text-[#2A2D2E]">
+                    Node Type <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -278,8 +278,8 @@ const NodeFormSheet = () => {
               name="nodeTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-[#2A2D2E]">
-                    Title
+                  <FormLabel className="flex flex-row gap-1 text-sm text-[#2A2D2E]">
+                    Title <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -299,8 +299,8 @@ const NodeFormSheet = () => {
               name="score"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-[#2A2D2E]">
-                    Score
+                  <FormLabel className="flex flex-row gap-1 text-sm text-[#2A2D2E]">
+                    Score <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -321,8 +321,8 @@ const NodeFormSheet = () => {
               name="contactType"
               render={() => (
                 <FormItem>
-                  <FormLabel className="text-sm text-[#2A2D2E]">
-                    Contact Type
+                  <FormLabel className="flex flex-row gap-1 text-sm text-[#2A2D2E]">
+                    Contact Type <span className="text-red-500">*</span>
                   </FormLabel>
                   <div className="flex flex-row gap-3 justify-start items-center">
                     {items.map((item) => (
@@ -393,7 +393,9 @@ const NodeFormSheet = () => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel className="flex flex-row gap-1">
+                      Message <span className="text-red-500">*</span>
+                    </FormLabel>
                     <div className="border border-[#ccc] rounded-[5px]">
                       <FormControl>
                         <Textarea

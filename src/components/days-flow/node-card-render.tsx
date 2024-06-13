@@ -509,11 +509,14 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                   className="nodrag nopan"
                 >
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger
+                      asChild
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => {}}
+                        onClick={(e) => e.stopPropagation()}
                         className="w-5 h-5 bg-[#00B2E3] rounded-full text-white hover:bg-[#00B2E3] hover:bg-opacity-70  hover:text-red-600"
                         disabled={!isConfigured}
                       >
