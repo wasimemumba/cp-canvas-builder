@@ -4,6 +4,7 @@ import {
   nodeIdAtom,
   nodesConfigured,
   selectedDayAtom,
+  undoAtom,
   workflowEdgesAtom,
 } from "@/store/workflow-atoms";
 import { ClipboardDocumentIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -71,6 +72,7 @@ const NodeFormSheet = () => {
   const setSelectedWorkflowId = useSetAtom(selectedDayAtom);
   const workflowEdges = useAtomValue(workflowEdgesAtom);
   const setNodesConfigured = useSetAtom(nodesConfigured);
+  const undoItems = useAtomValue(undoAtom);
 
   const selectedNode = useMemo(
     () => nodes?.find((node) => node?.id === selectedAtomId),
@@ -115,13 +117,13 @@ const NodeFormSheet = () => {
       nds.map((node) => {
         if (node.id === selectedAtomId) {
           const parsecurrentNodeData = JSON.parse(node.data);
-
           const parsedValues = {
             ...values,
             ...parsecurrentNodeData,
             nodeTitle: values?.nodeTitle,
             nodeDescription: values?.message,
             nodeType: values?.nodeType,
+            contactType: values?.contactType,
             isConfigured: values?.message?.length > 0,
             nodeIcon: getIcon(
               values?.nodeType as keyof typeof NODE_ICONS_TYPE_MAPPER
@@ -148,6 +150,28 @@ const NodeFormSheet = () => {
 
     if (typeof getworkspace !== "undefined" && isSomething(getworkspace)) {
       getworkspace.day.workflow = nodes;
+      undoItems?.forEach((undoItem) => {
+        if (undoItem?.id === selectedAtomId) {
+          const parsecurrentNodeData = JSON.parse(undoItem.data);
+          const parsedValues = {
+            ...parsecurrentNodeData,
+            nodeTitle: values?.nodeTitle,
+            nodeDescription: values?.message,
+            nodeType: values?.nodeType,
+            isConfigured: values?.message?.length > 0,
+            nodeIcon: getIcon(
+              values?.nodeType as keyof typeof NODE_ICONS_TYPE_MAPPER
+            ),
+            handle: getHandle(
+              values?.nodeType as keyof typeof NODE_HANDLE_MAPPER_BY_TYPE
+            ),
+          };
+
+          const stringifyData = JSON.stringify(parsedValues);
+
+          undoItem.data = stringifyData;
+        }
+      });
     } else {
       const newId = uuidv4();
       setSelectedWorkflowId(newId);

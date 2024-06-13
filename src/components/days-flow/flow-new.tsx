@@ -92,6 +92,7 @@ const FlowTest = (props: ReactFlowProps) => {
   const setOnDragging = useSetAtom(onDragging);
   const setNewNodeId = useSetAtom(newNodeId);
   const setNodesConfigured = useSetAtom(nodesConfigured);
+  const setAtomId = useSetAtom(nodeIdAtom);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [temporaryNodesArray, setTemporaryNodes] = useState<any>([]);
@@ -418,11 +419,12 @@ const FlowTest = (props: ReactFlowProps) => {
       ) {
         const { workflow } = nodesSelected.day;
         setNodes(workflow);
+        setAtomId(null);
       } else {
         setNodes([]);
       }
     }
-  }, [daysWorkflow, selectedWorkflowId, setNodes]);
+  }, [daysWorkflow, selectedWorkflowId, setAtomId, setNodes]);
 
   useEffect(() => {
     if (nodes.length > 0) {

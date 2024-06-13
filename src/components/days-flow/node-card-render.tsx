@@ -45,7 +45,13 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { PlusIconHandle, StraightLineSVG } from "./days-flow-icons";
+import {
+  EmailIcon,
+  MessageIcon,
+  PhoneIcon,
+  PlusIconHandle,
+  StraightLineSVG,
+} from "./days-flow-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,8 +95,14 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
 
   const parsedData = useMemo(() => getParsedNodeData(data), [data]);
 
-  const { nodeDescription, nodeIcon, nodeTitle, handle, isConfigured } =
-    parsedData;
+  const {
+    nodeDescription,
+    nodeIcon,
+    nodeTitle,
+    handle,
+    isConfigured,
+    contactType,
+  } = parsedData;
 
   useOnSelectionChange({
     onChange: ({ nodes }) => {
@@ -113,6 +125,8 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
       ...prevUndo,
       { ...deletedNode, undoType: "deleted" },
     ]);
+
+    setAtomId(null);
   };
 
   const onDeleteStartNode = () => {
@@ -128,6 +142,10 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
       };
     });
     deleteElements({ nodes: dependentNodes, edges: [] });
+
+    setUndo([]);
+    setRedo([]);
+    setAtomId(null);
   };
 
   const onAddNode = (nodeType: string) => {
@@ -410,10 +428,23 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <p className="text-xs text-[#777] truncate">
-                      {nodeDescription}
-                      ...
-                    </p>
+                    <div className="flex flex-row gap-1 justify-start items-center">
+                      {contactType?.map((cont) => {
+                        if (cont === "sms") {
+                          return <MessageIcon />;
+                        }
+                        if (cont === "ivr") {
+                          return <PhoneIcon />;
+                        }
+                        if (cont === "email") {
+                          return <EmailIcon />;
+                        }
+                      })}
+                      <p className="text-xs text-[#777] truncate">
+                        {nodeDescription}
+                        ...
+                      </p>
+                    </div>
                   </TooltipTrigger>
 
                   <TooltipContent className="bg-gray-800 text-white text-xs rounded-xl text-wrap break-words max-w-[250px]">
@@ -426,7 +457,22 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
           {isConfigured &&
             nodeDescription?.length <= 54 &&
             currentView === "detailed" && (
-              <p className="text-xs text-[#777] truncate">{nodeDescription}</p>
+              <div className="flex flex-row gap-1 justify-start items-center">
+                {contactType?.map((cont) => {
+                  if (cont === "sms") {
+                    return <MessageIcon />;
+                  }
+                  if (cont === "ivr") {
+                    return <PhoneIcon />;
+                  }
+                  if (cont === "email") {
+                    return <EmailIcon />;
+                  }
+                })}
+                <p className="text-xs text-[#777] truncate">
+                  {nodeDescription}
+                </p>
+              </div>
             )}
 
           {handle === "target" && (
