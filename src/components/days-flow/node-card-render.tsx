@@ -108,15 +108,15 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
   const onChangeSelection = useCallback(
     ({ nodes }: { nodes: Node[] }) => {
       const nodeId = nodes?.map((node) => node?.id);
-      if (!newelyAddedNodeId) {
-        setAtomId(nodeId && nodeId[0]);
-      }
+      // if (!newelyAddedNodeId) {
+      //   setAtomId(nodeId && nodeId[0]);
+      // }
 
       if (nodeId && nodeId[0] !== newelyAddedNodeId) {
         setNewlyAddedNodeId("");
       }
     },
-    [newelyAddedNodeId, setAtomId, setNewlyAddedNodeId]
+    [newelyAddedNodeId, setNewlyAddedNodeId]
   );
 
   useOnSelectionChange({
@@ -285,11 +285,18 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
     [daysWorkflow, getNodes, newelyAddedNodeId, selectedWorkflowId, setNodes]
   );
 
+  const onNodeClick = useCallback(() => {
+    if (!newelyAddedNodeId) {
+      setAtomId(id);
+    }
+  }, [id, newelyAddedNodeId, setAtomId]);
+
   return (
     <div
       className={`w-[350px]  bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 ${
         isSelfSelected && `border-[1.5px] border-cyan-500`
       } relative`}
+      onClick={onNodeClick}
     >
       {newelyAddedNodeId === id && (
         <div className="flex flex-col gap-2">
@@ -381,7 +388,10 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
               <TrashIcon
                 key={id}
                 className="h-4 w-4 hover:text-red-500"
-                onClick={onNodeDelete}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onNodeDelete();
+                }}
               />
             )}
 
@@ -404,7 +414,10 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                       <Button
                         type="button"
                         className=" bg-[#B1203D] hover:bg-[#B1203D] hover:opacity-70 rounded-[5px] text-white"
-                        onClick={onDeleteStartNode}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteStartNode();
+                        }}
                       >
                         Delete
                       </Button>

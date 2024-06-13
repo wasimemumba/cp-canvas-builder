@@ -624,6 +624,7 @@ const FlowTest = (props: ReactFlowProps) => {
         onDragLeave={onDagExit}
         onEdgeMouseEnter={onDagExit}
         onSelectionEnd={onSelectionEnd}
+        onPaneClick={() => setAtomId(null)}
         elevateNodesOnSelect
       />
 
