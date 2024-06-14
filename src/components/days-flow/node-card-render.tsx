@@ -60,7 +60,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { v4 as uuidv4 } from "uuid";
-import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
+// import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
 import {
   Select,
   SelectContent,
@@ -69,6 +69,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Input } from "../ui/input";
+import { getLayoutedElementsDagreOverlapTemp } from "./dagree-layout-temp";
 
 type NodeCardRenderProps = {
   data: string;
@@ -197,7 +198,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
   useEffect(() => {
     if (nodes.length > 1) {
       const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElementsDagreOverlap(nodes, edges);
+        getLayoutedElementsDagreOverlapTemp(nodes, edges);
 
       setNodes([...layoutedNodes]);
       setEdges([...layoutedEdges]);
@@ -295,7 +296,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
     <div
       className={`w-[350px]  bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 ${
         isSelfSelected && `border-[1.5px] border-cyan-500`
-      } relative`}
+      } relative z-[1100]`}
       onClick={onNodeClick}
     >
       {newelyAddedNodeId === id && (

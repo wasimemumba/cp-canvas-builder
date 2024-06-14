@@ -48,11 +48,12 @@ import {
   RedoIcon,
   UndoIcon,
 } from "./days-flow-icons";
-import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
+// import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
 import dagre from "@dagrejs/dagre";
 import GroupNode from "./group-node";
 import DaysMenu from "./days-menu";
 import { edgesEdit, editTest } from "./temp-edit-test";
+import { getLayoutedElementsDagreOverlapTemp } from "./dagree-layout-temp";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -287,7 +288,8 @@ const FlowTest = (props: ReactFlowProps) => {
 
       if (hasTempNode) {
         const { nodes: layoutedNodes, edges: layoutedEdges } =
-          getLayoutedElementsDagreOverlap(nodes, edges);
+          getLayoutedElementsDagreOverlapTemp(nodes, edges);
+
         setNodes([...layoutedNodes]);
         setEdges([...layoutedEdges]);
       }
@@ -444,6 +446,7 @@ const FlowTest = (props: ReactFlowProps) => {
   const onDragEnter = useCallback(() => {
     const tempraryNodes = nodes
       ?.filter((node) => node.type !== "liveChatNode")
+      ?.filter((node) => node?.type !== "groupNode")
       ?.filter((node) => {
         const parsedData = JSON.parse(node.data);
         return parsedData?.isConfigured;
@@ -506,28 +509,72 @@ const FlowTest = (props: ReactFlowProps) => {
 
   const onSelectionEnd = useCallback(() => {
     if (selectedNodes.length >= 2) {
+      const initialNodeId = nodes?.map((node) => {
+        if (node?.type === "initialNode") {
+          return node?.id;
+        }
+      });
+
+      const removeEdgesIds: string[] = [];
+
+      selectedNodes?.forEach((sl) => {
+        edges?.forEach((edge) => {
+          if (sl?.id === edge?.target) {
+            removeEdgesIds?.push(edge?.id);
+          }
+        });
+      });
+
+      removeEdgesIds?.forEach((re) => {
+        // setEdges((edges) => edges.filter((edge) => edge.id !== re));
+        setEdges((edges) =>
+          edges.map((edge) => {
+            if (edge && edge?.id === re) {
+              edge.hidden = true;
+
+              return edge;
+            } else return edge;
+          })
+        );
+      });
+
       const groupId = uuidv4();
-      const test = {
+      const groupNode = {
         id: groupId,
         type: "groupNode",
-        position: { x: 0, y: 0 },
         data: {},
+        position: { x: 0, y: 0 },
       };
-      setNodes((prev) => [...prev, test]);
+      setNodes((prev) => [...prev, groupNode]);
       selectedNodes?.forEach((selNod) => {
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === selNod?.id) {
               node.parentId = groupId;
               node.extent = "parent";
+              // node.draggable = true;
             }
             return node;
           })
         );
       });
+
+      if (initialNodeId[0]) {
+        const groupEdge = {
+          animated: false,
+          id: uuidv4(),
+          source: initialNodeId[0],
+          target: groupId,
+          type: "buttonEdge",
+          undoType: "added",
+        };
+        setEdges((prevEdges) => addEdge(groupEdge, prevEdges));
+      }
+
       setSelectedNodes([]);
     }
-  }, [selectedNodes, setNodes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes?.length, selectedNodes, setEdges, setNodes]);
 
   useOnSelectionChange({
     onChange: onSelectChange,

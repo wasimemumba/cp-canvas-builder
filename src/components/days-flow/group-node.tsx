@@ -10,7 +10,7 @@ const GroupNode = (props: NodeProps) => {
 
   return (
     <div
-      className={`border-2 border-blue-600  w-[400px] h-[400px] ${isDragging} && "pointer-events-none"`}
+      className={`border-2 border-blue-600  w-[600px] h-[400px] ${isDragging} && "pointer-events-none"`}
     >
       <Handle type="target" position={Position?.Top} />
     </div>
