@@ -184,11 +184,11 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
 
     setEdges((prevEdges) => addEdge(autoEdge, prevEdges));
 
-    daysWorkflow?.forEach((workflow) => {
-      if (workflow?.day?.id === selectedWorkflowId) {
-        workflow.day.workflow = [...workflow.day.workflow, newNode];
-      }
-    });
+    // daysWorkflow?.forEach((workflow) => {
+    //   if (workflow?.day?.id === selectedWorkflowId) {
+    //     workflow.day.workflow = [...workflow.day.workflow, newNode];
+    //   }
+    // });
 
     setUndo((prevUndo) => [...prevUndo, newNode]);
     setRedo([]);
@@ -296,8 +296,12 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
     <div
       className={`w-[350px]  bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 ${
         isSelfSelected && `border-[1.5px] border-cyan-500`
-      } relative z-[1100]`}
-      onClick={onNodeClick}
+      } relative`}
+      // onClick={onNodeClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onNodeClick();
+      }}
     >
       {newelyAddedNodeId === id && (
         <div className="flex flex-col gap-2">
@@ -390,7 +394,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 key={id}
                 className="h-4 w-4 hover:text-red-500"
                 onClick={(e) => {
-                  e.stopPropagation();
+                  e?.stopPropagation();
                   onNodeDelete();
                 }}
               />
@@ -415,10 +419,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                       <Button
                         type="button"
                         className=" bg-[#B1203D] hover:bg-[#B1203D] hover:opacity-70 rounded-[5px] text-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteStartNode();
-                        }}
+                        onClick={onDeleteStartNode}
                       >
                         Delete
                       </Button>
@@ -496,7 +497,10 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
             )}
 
           {handle === "target" && (
-            <div className="absolute -bottom-[60px] left-1/2 opacity-0">
+            <div
+              className="absolute -bottom-[60px] left-1/2 opacity-0"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div>
                 <StraightLineSVG />
 
@@ -567,7 +571,10 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
           )}
 
           {handle !== "target" && (
-            <div className="absolute -bottom-[60px] left-1/2">
+            <div
+              className="absolute -bottom-[60px] left-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div>
                 <StraightLineSVG />
 

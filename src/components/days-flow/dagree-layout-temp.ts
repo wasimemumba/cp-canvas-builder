@@ -27,6 +27,7 @@ export const getLayoutedElementsDagreOverlapTemp = (
 
   parentNodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
+
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
@@ -66,7 +67,7 @@ export const getLayoutedElementsDagreOverlapTemp = (
       (childNode) => childNode.parentId === parentNode.id
     );
     let startX = parentNode.position.x + 20; // Adding some padding inside the parent node
-    const startY = parentNode.position.y + 20;
+    // const startY = parentNode.position.y + 20;
     const parentBoundary = {
       x: parentNode.position.x,
       y: parentNode.position.y,
@@ -76,9 +77,14 @@ export const getLayoutedElementsDagreOverlapTemp = (
 
     childNodesOfParent.forEach((childNode, index) => {
       childNode.position = {
-        x: startX,
-        y: startY + index * (nodeHeight + 20),
+        x: 50 + (index + 1 * 100),
+        y: 50,
       };
+
+      // childNode.position = {
+      //   x: startX,
+      //   y: startY + index * (nodeHeight + 20),
+      // };
 
       if (
         childNode.position.y + nodeHeight >

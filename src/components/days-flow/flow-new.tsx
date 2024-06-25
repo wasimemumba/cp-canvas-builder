@@ -54,6 +54,7 @@ import GroupNode from "./group-node";
 import DaysMenu from "./days-menu";
 import { edgesEdit, editTest } from "./temp-edit-test";
 import { getLayoutedElementsDagreOverlapTemp } from "./dagree-layout-temp";
+import { removeDuplicates } from "./day-flow-form.utils";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -65,6 +66,7 @@ const nodeTypes = {
   liveChatNode: NodeCardRender,
   tempNode: TempNode,
   groupNode: GroupNode,
+  childNode: NodeCardRender,
 };
 
 const edgeTypes = {
@@ -102,6 +104,7 @@ const FlowTest = (props: ReactFlowProps) => {
     useState<any>(null);
 
   const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
+  const [groupNodes, setGroupNodes] = useState<Node[]>([]);
 
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
@@ -130,8 +133,8 @@ const FlowTest = (props: ReactFlowProps) => {
       event.dataTransfer.dropEffect = "move";
 
       const position = reactFlowInstance?.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
+        x: event?.clientX,
+        y: event?.clientY,
       }) || {
         x: 200,
         y: 200,
@@ -141,8 +144,8 @@ const FlowTest = (props: ReactFlowProps) => {
 
       if (closesNodeFound) {
         setNodes((nds) =>
-          nds.map((node) => {
-            if (node.id === closesNodeFound?.id && node.type === "tempNode") {
+          nds?.map((node) => {
+            if (node?.id === closesNodeFound?.id && node?.type === "tempNode") {
               node.data = "Release to create a new node";
             }
 
@@ -151,8 +154,8 @@ const FlowTest = (props: ReactFlowProps) => {
         );
       } else {
         setNodes((nds) =>
-          nds.map((node) => {
-            if (node.type === "tempNode")
+          nds?.map((node) => {
+            if (node?.type === "tempNode")
               node.data = "Drag here to create new node";
 
             return node;
@@ -184,8 +187,8 @@ const FlowTest = (props: ReactFlowProps) => {
       }
 
       const position = reactFlowInstance?.screenToFlowPosition({
-        x: event.clientX - 90,
-        y: event.clientY - 50,
+        x: event?.clientX - 90,
+        y: event?.clientY - 50,
       }) || {
         x: 200,
         y: 200,
@@ -230,13 +233,13 @@ const FlowTest = (props: ReactFlowProps) => {
         if (typeof getworkspace !== "undefined" && isSomething(getworkspace)) {
           const allNodes = getNodes();
 
-          const filterTempNodes = allNodes.filter(
-            (node) => node.type !== "tempNode"
+          const filterTempNodes = allNodes?.filter(
+            (node) => node?.type !== "tempNode"
           );
           const nodesToSave = [...filterTempNodes, newNode];
           getworkspace.day.workflow = nodesToSave;
 
-          const parsedNodeData = JSON.parse(data);
+          const parsedNodeData = JSON?.parse(data);
           if (parsedNodeData?.nodeType !== "initialNode") {
             setNewNodeId(newNodeId);
           }
@@ -254,16 +257,16 @@ const FlowTest = (props: ReactFlowProps) => {
         if (typeof getworkspace !== "undefined" && isSomething(getworkspace)) {
           const allNodes = getNodes();
 
-          const filterTempNodes = allNodes.filter(
-            (node) => node.type !== "tempNode"
+          const filterTempNodes = allNodes?.filter(
+            (node) => node?.type !== "tempNode"
           );
           const nodesToSave = [...filterTempNodes, newNode];
           getworkspace.day.workflow = nodesToSave;
         }
       }
 
-      setNodes((nodes) => nodes.filter((node) => node.type !== "tempNode"));
-      setEdges((edges) => edges.filter((edge) => edge.type !== "tempEdge"));
+      setNodes((nodes) => nodes?.filter((node) => node?.type !== "tempNode"));
+      setEdges((edges) => edges?.filter((edge) => edge?.type !== "tempEdge"));
 
       setOnDragging(false);
     },
@@ -283,8 +286,8 @@ const FlowTest = (props: ReactFlowProps) => {
   );
 
   useEffect(() => {
-    if (temporaryNodesArray && nodes.length > 1) {
-      const hasTempNode = nodes.some((n) => n.type === "tempNode");
+    if (temporaryNodesArray && nodes?.length > 1) {
+      const hasTempNode = nodes?.some((n) => n?.type === "tempNode");
 
       if (hasTempNode) {
         const { nodes: layoutedNodes, edges: layoutedEdges } =
@@ -295,10 +298,10 @@ const FlowTest = (props: ReactFlowProps) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes.length, edges.length, temporaryNodesArray, setNodes, setEdges]);
+  }, [nodes?.length, edges?.length, temporaryNodesArray, setNodes, setEdges]);
 
   const onUndo = () => {
-    const lastValue = undoValue && undoValue.length > 0 && undoValue.pop();
+    const lastValue = undoValue && undoValue?.length > 0 && undoValue?.pop();
 
     if (!lastValue || !isSomething(lastValue)) {
       return;
@@ -307,8 +310,10 @@ const FlowTest = (props: ReactFlowProps) => {
       // eslint-disable-next-line no-prototype-builtins
       lastValue?.hasOwnProperty("targetHandle")
     ) {
-      if (lastValue.undoType === "added") {
-        setEdges((edges) => edges.filter((edge) => edge.id !== lastValue.id));
+      if (lastValue?.undoType === "added") {
+        setEdges((edges) =>
+          edges?.filter((edge) => edge?.id !== lastValue?.id)
+        );
 
         setRedo((prevRedo) => {
           if (prevRedo?.length === 0) {
@@ -327,17 +332,83 @@ const FlowTest = (props: ReactFlowProps) => {
         });
       }
     } else {
-      if (lastValue.undoType === "added") {
-        setNodes((prevNodes) =>
-          prevNodes.filter((node) => node.id !== lastValue.id)
-        );
+      if (lastValue?.undoType === "added") {
+        if (lastValue?.type === "groupNode") {
+          const childNodes: Node[] = [];
 
-        setRedo((prevRedo) => {
-          if (prevRedo?.length === 0) {
-            return [lastValue];
-          }
-          return [lastValue, ...prevRedo];
-        });
+          nodes.forEach((node) => {
+            if (typeof node.data === "string") {
+              const childParsedData = JSON.parse(node.data);
+              if (childParsedData?.nodeParent === lastValue?.id) {
+                // if (node?.parentId === lastValue?.id) {
+                childNodes?.push(node);
+              }
+            }
+          });
+
+          childNodes?.forEach((sl) => {
+            setNodes((nds) =>
+              nds?.map((node) => {
+                if (node?.id === sl?.id) {
+                  node.parentId = undefined;
+                }
+                return node;
+              })
+            );
+          });
+
+          childNodes?.forEach((cn) => {
+            setEdges((edges) =>
+              edges.map((edge) => {
+                if (edge && edge?.target === cn?.id) {
+                  // edge.source = edg;
+                  edge.hidden = false;
+
+                  return edge;
+                } else return edge;
+              })
+            );
+          });
+
+          setNodes((prevNodes) =>
+            prevNodes?.filter((node) => node?.id !== lastValue?.id)
+          );
+
+          const grpUndo = [lastValue, ...childNodes];
+
+          setRedo((prevRedo) => {
+            if (prevRedo?.length === 0) {
+              return [...grpUndo];
+            }
+            return [...grpUndo, ...prevRedo];
+          });
+
+          // const removedParentId = childNodes?.map((cn) => {
+          //   cn.parentId = undefined
+
+          //   return cn
+          // })
+
+          childNodes?.forEach((cn) => {
+            setUndo((prevVal) => prevVal?.filter((pv) => pv !== cn?.id));
+          });
+        } else {
+          setNodes((prevNodes) =>
+            prevNodes?.filter((node) => {
+              if (isSomething(lastValue?.parentId)) {
+                lastValue.parentId = undefined;
+              }
+              return node?.id !== lastValue?.id;
+            })
+          );
+
+          setRedo((prevRedo) => {
+            if (prevRedo?.length === 0) {
+              return [lastValue];
+            }
+            return [lastValue, ...prevRedo];
+          });
+        }
       } else {
         setNodes((prevNodes) => [...prevNodes, lastValue]);
 
@@ -352,7 +423,7 @@ const FlowTest = (props: ReactFlowProps) => {
   };
 
   const onRedo = () => {
-    const firstValue = redoValue && redoValue.length > 0 && redoValue.shift();
+    const firstValue = redoValue && redoValue?.length > 0 && redoValue?.shift();
 
     if (!firstValue || !isSomething(firstValue)) {
       return;
@@ -362,11 +433,13 @@ const FlowTest = (props: ReactFlowProps) => {
       // eslint-disable-next-line no-prototype-builtins
       firstValue?.hasOwnProperty("targetHandle")
     ) {
-      if (firstValue.undoType === "deleted") {
-        setEdges((edges) => edges.filter((edge) => edge.id !== firstValue.id));
+      if (firstValue?.undoType === "deleted") {
+        setEdges((edges) =>
+          edges?.filter((edge) => edge?.id !== firstValue?.id)
+        );
 
         setUndo((prevUndo) => {
-          if (prevUndo.length === 0) {
+          if (prevUndo?.length === 0) {
             return [firstValue];
           }
           return [...prevUndo, firstValue];
@@ -375,33 +448,99 @@ const FlowTest = (props: ReactFlowProps) => {
         setEdges((prevEdges) => addEdge(firstValue, prevEdges));
 
         setUndo((prevUndo) => {
-          if (prevUndo.length === 0) {
+          if (prevUndo?.length === 0) {
             return [firstValue];
           }
           return [...prevUndo, firstValue];
         });
       }
     } else {
-      if (firstValue.undoType === "deleted") {
+      if (firstValue?.undoType === "deleted") {
         setNodes((prevNodes) =>
-          prevNodes.filter((node) => node.id !== firstValue.id)
+          prevNodes?.filter((node) => node?.id !== firstValue?.id)
         );
 
         setUndo((prevUndo) => {
-          if (prevUndo.length === 0) {
+          if (prevUndo?.length === 0) {
             return [firstValue];
           }
           return [...prevUndo, firstValue];
         });
       } else {
-        setNodes((prevNodes) => [...prevNodes, firstValue]);
+        if (firstValue?.type === "groupNode") {
+          const childNodes: Node[] = [];
 
-        setUndo((prevUndo) => {
-          if (prevUndo.length === 0) {
-            return [firstValue];
-          }
-          return [...prevUndo, firstValue];
-        });
+          groupNodes?.forEach((node) => {
+            if (typeof node.data === "string") {
+              const childParsedData = JSON.parse(node.data);
+              if (childParsedData?.nodeParent === firstValue?.id) {
+                // if (node?.parentId === lastValue?.id) {
+                childNodes?.push(node);
+              }
+            }
+
+            // if (node?.parentId === firstValue?.id) {
+            //   childNodes?.push(node);
+            // }
+          });
+
+          // const redoNodes = [firstValue, ...childNodes]
+
+          setNodes((prevNodes) => [firstValue, ...prevNodes]);
+          setNodes((nds) =>
+            nds?.map((node) => {
+              childNodes?.forEach((cn) => {
+                if (cn?.id === node?.id) {
+                  node.parentId = firstValue?.id;
+                  node.extent = "parent";
+                  node.position.x = 0;
+                  node.position.y = 10;
+                }
+              });
+
+              return node;
+            })
+          );
+
+          childNodes?.forEach((node) => {
+            setEdges((edges) =>
+              edges?.map((edge) => {
+                if (edge && edge?.target === node?.id) {
+                  // edge.source = edg;
+                  edge.hidden = true;
+
+                  return edge;
+                } else return edge;
+              })
+            );
+          });
+
+          const redoGrp = [...childNodes, firstValue];
+
+          setUndo((prevUndo) => {
+            const newVals = [...prevUndo, ...redoGrp];
+            const uniqueNodes = removeDuplicates(newVals);
+
+            // if (prevUndo?.length === 0) {
+            //   return [...uniqueNodes];
+            // }
+
+            return [...uniqueNodes];
+          });
+
+          childNodes?.forEach((cn) => {
+            setRedo((prevRedo) => prevRedo?.filter((pr) => pr?.id !== cn?.id));
+          });
+        } else {
+          setNodes((prevNodes) => [...prevNodes, firstValue]);
+
+          setUndo((prevUndo) => {
+            if (prevUndo?.length === 0) {
+              return [firstValue];
+            }
+            return [...prevUndo, firstValue];
+          });
+        }
       }
     }
   };
@@ -429,7 +568,7 @@ const FlowTest = (props: ReactFlowProps) => {
   }, [daysWorkflow, selectedWorkflowId, setAtomId, setNodes]);
 
   useEffect(() => {
-    if (nodes.length > 0) {
+    if (nodes?.length > 0) {
       const nodesConfigured = checkIfNodesConfigured(nodes);
 
       setNodesConfigured(nodesConfigured);
@@ -437,7 +576,7 @@ const FlowTest = (props: ReactFlowProps) => {
       setNodesConfigured(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes.length, setNodesConfigured]);
+  }, [nodes?.length, setNodesConfigured]);
 
   useEffect(() => {
     setWorkflowEdges(edges);
@@ -445,30 +584,30 @@ const FlowTest = (props: ReactFlowProps) => {
 
   const onDragEnter = useCallback(() => {
     const tempraryNodes = nodes
-      ?.filter((node) => node.type !== "liveChatNode")
+      ?.filter((node) => node?.type !== "liveChatNode")
       ?.filter((node) => node?.type !== "groupNode")
       ?.filter((node) => {
-        const parsedData = JSON.parse(node.data);
+        const parsedData = JSON.parse(node?.data);
         return parsedData?.isConfigured;
       })
-      .map((node) => {
+      ?.map((node) => {
         const tempTargetId = uuidv4();
 
         // const allTargets = processGraph(edges, node.id);
 
-        const nodeWidth = node.width || 50;
-        const nodeHeight = node.height || 50;
+        const nodeWidth = node?.width || 50;
+        const nodeHeight = node?.height || 50;
 
         const tempNode = {
           id: tempTargetId,
           type: "tempNode",
           position: {
             x: nodeWidth,
-            y: node.position.y + nodeHeight + 20,
+            y: node?.position?.y + nodeHeight + 20,
           },
           data: "Drag here to add new node",
           undoType: "added",
-          sourceId: node.id,
+          sourceId: node?.id,
         };
 
         const tempEdge = {
@@ -476,7 +615,7 @@ const FlowTest = (props: ReactFlowProps) => {
           id: uuidv4(),
           type: "tempEdge",
           undoType: "added",
-          source: node.id,
+          source: node?.id,
           sourceHandle: null,
           target: tempTargetId,
         };
@@ -496,8 +635,8 @@ const FlowTest = (props: ReactFlowProps) => {
   }, [nodes, setEdges, setNodes]);
 
   const onDagExit = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.type !== "tempNode"));
-    setEdges((edges) => edges.filter((edge) => edge.type !== "tempEdge"));
+    setNodes((nodes) => nodes?.filter((node) => node?.type !== "tempNode"));
+    setEdges((edges) => edges?.filter((edge) => edge?.type !== "tempEdge"));
   }, [setEdges, setNodes]);
 
   const onSelectChange = useCallback(
@@ -508,28 +647,28 @@ const FlowTest = (props: ReactFlowProps) => {
   );
 
   const onSelectionEnd = useCallback(() => {
-    if (selectedNodes.length >= 2) {
-      const initialNodeId = nodes?.map((node) => {
-        if (node?.type === "initialNode") {
-          return node?.id;
-        }
-      });
+    if (selectedNodes?.length >= 2) {
+      const initialNode = nodes?.find((node) => node?.type === "initialNode");
 
       const removeEdgesIds: string[] = [];
+      const parentIds: string[] = [];
+      const selectedUpdatedNodes: Node[] = [];
 
       selectedNodes?.forEach((sl) => {
         edges?.forEach((edge) => {
           if (sl?.id === edge?.target) {
             removeEdgesIds?.push(edge?.id);
+            parentIds?.push(edge?.source);
           }
         });
       });
+      const groupId = uuidv4();
 
       removeEdgesIds?.forEach((re) => {
-        // setEdges((edges) => edges.filter((edge) => edge.id !== re));
         setEdges((edges) =>
-          edges.map((edge) => {
+          edges?.map((edge) => {
             if (edge && edge?.id === re) {
+              // edge.source = groupId;
               edge.hidden = true;
 
               return edge;
@@ -538,43 +677,99 @@ const FlowTest = (props: ReactFlowProps) => {
         );
       });
 
-      const groupId = uuidv4();
       const groupNode = {
         id: groupId,
         type: "groupNode",
         data: {},
         position: { x: 0, y: 0 },
+        undoType: "added",
       };
-      setNodes((prev) => [...prev, groupNode]);
+      setNodes((prev) => [groupNode, ...prev]);
+      // setUndo((prevUndo) => [...prevUndo, groupNode]);
       selectedNodes?.forEach((selNod) => {
         setNodes((nds) =>
-          nds.map((node) => {
-            if (node.id === selNod?.id) {
+          nds?.map((node) => {
+            if (node?.id === selNod?.id) {
+              // node.parentId = groupId;
+              // node.extent = "parent";
+              // node.position.x = 0;
+              // node.position.y = 10;
+              // selectedUpdatedNodes.push(node);
+
+              const nodeData = JSON.parse(node?.data);
+              const groupedData = {
+                ...nodeData,
+                nodeParent: groupId,
+              };
+
               node.parentId = groupId;
               node.extent = "parent";
-              // node.draggable = true;
+              node.position.x = 0;
+              node.position.y = 10;
+              node.data = JSON.stringify(groupedData);
+              selectedUpdatedNodes?.push(node);
+            }
+            if (node.type === "groupNode") {
+              // node.width = 300 * selectedNodes.length;
             }
             return node;
           })
         );
       });
 
-      if (initialNodeId[0]) {
+      setGroupNodes((prev) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const uniqueNodes: any = {};
+
+        // Add childNodes to the uniqueNodes object
+        selectedUpdatedNodes?.forEach((node) => {
+          uniqueNodes[node.id] = node;
+        });
+
+        // Add prev nodes to the uniqueNodes object, only if they do not exist already
+        prev?.forEach((node) => {
+          if (!uniqueNodes[node.id]) {
+            uniqueNodes[node.id] = node;
+          }
+        });
+
+        // Convert uniqueNodes back to an array
+        return Object.values(uniqueNodes);
+      });
+
+      // check if all nodes have same same parent
+
+      const isSameParent = parentIds?.every((val) => val === parentIds[0]);
+
+      if (initialNode) {
         const groupEdge = {
           animated: false,
           id: uuidv4(),
-          source: initialNodeId[0],
-          target: groupId,
+          source: "",
           type: "buttonEdge",
+          target: groupId,
           undoType: "added",
+          ...(isSameParent && { source: parentIds[0] }),
         };
         setEdges((prevEdges) => addEdge(groupEdge, prevEdges));
       }
 
+      setUndo((prevUndo) => [...prevUndo, groupNode]);
       setSelectedNodes([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes?.length, selectedNodes, setEdges, setNodes]);
+
+  useEffect(() => {
+    if (nodes?.every((node) => node?.type !== "tempNode")) {
+      daysWorkflow?.forEach((workflow) => {
+        if (workflow?.day?.id === selectedWorkflowId) {
+          workflow.day.workflow = nodes;
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [daysWorkflow, nodes?.length, selectedWorkflowId]);
 
   useOnSelectionChange({
     onChange: onSelectChange,
@@ -583,8 +778,8 @@ const FlowTest = (props: ReactFlowProps) => {
   const addStartNode = useCallback(
     (event: { clientX: number; clientY: number }) => {
       const position = reactFlowInstance?.screenToFlowPosition({
-        x: event.clientX - 90,
-        y: event.clientY - 50,
+        x: event?.clientX - 90,
+        y: event?.clientY - 50,
       }) || {
         x: 200,
         y: 200,
@@ -613,23 +808,16 @@ const FlowTest = (props: ReactFlowProps) => {
 
       setNodes((prevNodes) => [...prevNodes, newNode]);
 
-      daysWorkflow?.forEach((workflow) => {
-        if (workflow?.day?.id === selectedWorkflowId) {
-          workflow.day.workflow = [...workflow.day.workflow, newNode];
-        }
-      });
+      // daysWorkflow?.forEach((workflow) => {
+      //   if (workflow?.day?.id === selectedWorkflowId) {
+      //     workflow.day.workflow = [...workflow.day.workflow, newNode];
+      //   }
+      // });
 
       setUndo((prevUndo) => [...prevUndo, newNode]);
       setRedo([]);
     },
-    [
-      daysWorkflow,
-      reactFlowInstance,
-      selectedWorkflowId,
-      setNodes,
-      setRedo,
-      setUndo,
-    ]
+    [reactFlowInstance, setNodes, setRedo, setUndo]
   );
 
   const onEditTest = () => {
@@ -702,10 +890,10 @@ const FlowTest = (props: ReactFlowProps) => {
         key="main-menu-panel"
       >
         <Sidebar />
-        <Button onClick={onUndo} disabled={undoValue && undoValue.length <= 0}>
+        <Button onClick={onUndo} disabled={undoValue && undoValue?.length <= 0}>
           <UndoIcon />
         </Button>
-        <Button onClick={onRedo} disabled={redoValue && redoValue.length <= 0}>
+        <Button onClick={onRedo} disabled={redoValue && redoValue?.length <= 0}>
           <RedoIcon />
         </Button>
       </Panel>
@@ -765,7 +953,7 @@ const FlowTest = (props: ReactFlowProps) => {
         </Button>
       </Panel>
 
-      {nodes.length === 0 && (
+      {nodes?.length === 0 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 justify-start items-center">
           <div className="relative bg-[#F1F1F1] w-[80px] h-[80px] rounded-full">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

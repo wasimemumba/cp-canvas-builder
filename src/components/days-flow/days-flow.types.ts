@@ -13,6 +13,7 @@ export type NODE_CARD_TYPE = {
   undoType?: string;
   score?: string;
   contactType?: string[];
+  nodeParent?: string | undefined;
 };
 
 export type DAYS_FLOW_DATA = {
