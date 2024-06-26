@@ -60,7 +60,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { v4 as uuidv4 } from "uuid";
-// import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
 import {
   Select,
   SelectContent,
@@ -109,10 +108,6 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
   const onChangeSelection = useCallback(
     ({ nodes }: { nodes: Node[] }) => {
       const nodeId = nodes?.map((node) => node?.id);
-      // if (!newelyAddedNodeId) {
-      //   setAtomId(nodeId && nodeId[0]);
-      // }
-
       if (nodeId && nodeId[0] !== newelyAddedNodeId) {
         setNewlyAddedNodeId("");
       }
@@ -183,12 +178,6 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
     };
 
     setEdges((prevEdges) => addEdge(autoEdge, prevEdges));
-
-    // daysWorkflow?.forEach((workflow) => {
-    //   if (workflow?.day?.id === selectedWorkflowId) {
-    //     workflow.day.workflow = [...workflow.day.workflow, newNode];
-    //   }
-    // });
 
     setUndo((prevUndo) => [...prevUndo, newNode]);
     setRedo([]);
@@ -297,7 +286,6 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
       className={`w-[350px]  bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 ${
         isSelfSelected && `border-[1.5px] border-cyan-500`
       } relative`}
-      // onClick={onNodeClick}
       onClick={(e) => {
         e.stopPropagation();
         onNodeClick();
@@ -311,7 +299,6 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
           >
             <SelectTrigger className="border rounded-[4px] border-[#ccc]  focus:border-[2px] focus:border-[#00B2E3]">
               <div className="flex flex-row gap-2">
-                {/* {NODE_ICONS_MAPPER[NODE_ICONS_TYPE_MAPPER[newNodeType]]} */}
                 <SelectValue
                   placeholder="Select a fruit"
                   className="placeholder:text-[#BEBFC0]"
@@ -349,7 +336,6 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
             onClick={(e) => {
               e.nativeEvent.stopPropagation();
             }}
-            // defaultValue={parsedData.nodeTitle}
           />
 
           {handle === "target" && (
@@ -505,13 +491,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 <StraightLineSVG />
 
                 <div
-                  style={{
-                    position: "absolute",
-                    transform: `translate(-50%, -50%) translate(4px,-30px)`,
-                    fontSize: 12,
-                    pointerEvents: "all",
-                  }}
-                  className="nodrag nopan"
+                  className={`absolute text-xs pointer-events-auto transform  -translate-x-1/3 -translate-y-[40px]`}
                 >
                   <DropdownMenu>
                     <DropdownMenuTrigger
@@ -579,13 +559,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 <StraightLineSVG />
 
                 <div
-                  style={{
-                    position: "absolute",
-                    transform: `translate(-50%, -50%) translate(4px,-30px)`,
-                    fontSize: 12,
-                    pointerEvents: "all",
-                  }}
-                  className="nodrag nopan"
+                  className={`absolute text-xs pointer-events-auto transform  -translate-x-1/3 -translate-y-[40px]`}
                 >
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -21,9 +21,6 @@ export const formSchema = z.object({
     .string({
       required_error: "Message is required",
     })
-    .min(2, {
-      message: "Message is required",
-    })
     .max(234, {
       message: "Message must not be longer than 234 characters.",
     }),

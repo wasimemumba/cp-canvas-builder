@@ -54,8 +54,8 @@ export const getLayoutedElementsDagreOverlapTemp = (
         if (areNodesOverlapping(nodes[i], nodes[j])) {
           nodes[j].position.y += nodeHeight;
           if (nodes[j].position.y + nodeHeight > boundary.y + boundary.height) {
-            nodes[j].position.y = boundary.y; // Reset to top of the parent boundary if it exceeds the height
-            nodes[j].position.x += nodeWidth; // Move to the right
+            nodes[j].position.y = boundary.y;
+            nodes[j].position.x += nodeWidth;
           }
         }
       }
@@ -66,8 +66,7 @@ export const getLayoutedElementsDagreOverlapTemp = (
     const childNodesOfParent = childNodes.filter(
       (childNode) => childNode.parentId === parentNode.id
     );
-    let startX = parentNode.position.x + 20; // Adding some padding inside the parent node
-    // const startY = parentNode.position.y + 20;
+    let startX = parentNode.position.x + 20;
     const parentBoundary = {
       x: parentNode.position.x,
       y: parentNode.position.y,
@@ -81,17 +80,12 @@ export const getLayoutedElementsDagreOverlapTemp = (
         y: 50,
       };
 
-      // childNode.position = {
-      //   x: startX,
-      //   y: startY + index * (nodeHeight + 20),
-      // };
-
       if (
         childNode.position.y + nodeHeight >
         parentBoundary.y + parentBoundary.height
       ) {
-        childNode.position.y = parentBoundary.y + 20; // Reset to top of the parent boundary if it exceeds the height
-        startX += nodeWidth + 20; // Move to the right
+        childNode.position.y = parentBoundary.y + 20;
+        startX += nodeWidth + 20;
         childNode.position.x = startX;
       }
     });

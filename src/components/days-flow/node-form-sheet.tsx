@@ -108,7 +108,7 @@ const NodeFormSheet = () => {
     handleSubmit,
     control,
     getValues,
-    formState: { isValid },
+    // formState: { isValid },
   } = form;
   const { contactType } = getValues();
 
@@ -425,7 +425,7 @@ const NodeFormSheet = () => {
                 type="submit"
                 variant="secondary"
                 className="text-white bg-[#00B2E3]  rounded-[5px] hover:bg-[#00B2E3] hover:opacity-70"
-                disabled={!isValid}
+                // disabled={!isValid}
               >
                 Save
               </Button>

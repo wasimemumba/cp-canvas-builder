@@ -48,7 +48,6 @@ import {
   RedoIcon,
   UndoIcon,
 } from "./days-flow-icons";
-// import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
 import dagre from "@dagrejs/dagre";
 import GroupNode from "./group-node";
 import DaysMenu from "./days-menu";
@@ -340,7 +339,6 @@ const FlowTest = (props: ReactFlowProps) => {
             if (typeof node.data === "string") {
               const childParsedData = JSON.parse(node.data);
               if (childParsedData?.nodeParent === lastValue?.id) {
-                // if (node?.parentId === lastValue?.id) {
                 childNodes?.push(node);
               }
             }
@@ -361,7 +359,6 @@ const FlowTest = (props: ReactFlowProps) => {
             setEdges((edges) =>
               edges.map((edge) => {
                 if (edge && edge?.target === cn?.id) {
-                  // edge.source = edg;
                   edge.hidden = false;
 
                   return edge;
@@ -382,12 +379,6 @@ const FlowTest = (props: ReactFlowProps) => {
             }
             return [...grpUndo, ...prevRedo];
           });
-
-          // const removedParentId = childNodes?.map((cn) => {
-          //   cn.parentId = undefined
-
-          //   return cn
-          // })
 
           childNodes?.forEach((cn) => {
             setUndo((prevVal) => prevVal?.filter((pv) => pv !== cn?.id));
@@ -474,17 +465,10 @@ const FlowTest = (props: ReactFlowProps) => {
             if (typeof node.data === "string") {
               const childParsedData = JSON.parse(node.data);
               if (childParsedData?.nodeParent === firstValue?.id) {
-                // if (node?.parentId === lastValue?.id) {
                 childNodes?.push(node);
               }
             }
-
-            // if (node?.parentId === firstValue?.id) {
-            //   childNodes?.push(node);
-            // }
           });
-
-          // const redoNodes = [firstValue, ...childNodes]
 
           setNodes((prevNodes) => [firstValue, ...prevNodes]);
           setNodes((nds) =>
@@ -520,10 +504,6 @@ const FlowTest = (props: ReactFlowProps) => {
           setUndo((prevUndo) => {
             const newVals = [...prevUndo, ...redoGrp];
             const uniqueNodes = removeDuplicates(newVals);
-
-            // if (prevUndo?.length === 0) {
-            //   return [...uniqueNodes];
-            // }
 
             return [...uniqueNodes];
           });
@@ -592,8 +572,6 @@ const FlowTest = (props: ReactFlowProps) => {
       })
       ?.map((node) => {
         const tempTargetId = uuidv4();
-
-        // const allTargets = processGraph(edges, node.id);
 
         const nodeWidth = node?.width || 50;
         const nodeHeight = node?.height || 50;
@@ -668,7 +646,6 @@ const FlowTest = (props: ReactFlowProps) => {
         setEdges((edges) =>
           edges?.map((edge) => {
             if (edge && edge?.id === re) {
-              // edge.source = groupId;
               edge.hidden = true;
 
               return edge;
@@ -685,17 +662,10 @@ const FlowTest = (props: ReactFlowProps) => {
         undoType: "added",
       };
       setNodes((prev) => [groupNode, ...prev]);
-      // setUndo((prevUndo) => [...prevUndo, groupNode]);
       selectedNodes?.forEach((selNod) => {
         setNodes((nds) =>
           nds?.map((node) => {
             if (node?.id === selNod?.id) {
-              // node.parentId = groupId;
-              // node.extent = "parent";
-              // node.position.x = 0;
-              // node.position.y = 10;
-              // selectedUpdatedNodes.push(node);
-
               const nodeData = JSON.parse(node?.data);
               const groupedData = {
                 ...nodeData,
@@ -708,9 +678,6 @@ const FlowTest = (props: ReactFlowProps) => {
               node.position.y = 10;
               node.data = JSON.stringify(groupedData);
               selectedUpdatedNodes?.push(node);
-            }
-            if (node.type === "groupNode") {
-              // node.width = 300 * selectedNodes.length;
             }
             return node;
           })
@@ -807,12 +774,6 @@ const FlowTest = (props: ReactFlowProps) => {
       };
 
       setNodes((prevNodes) => [...prevNodes, newNode]);
-
-      // daysWorkflow?.forEach((workflow) => {
-      //   if (workflow?.day?.id === selectedWorkflowId) {
-      //     workflow.day.workflow = [...workflow.day.workflow, newNode];
-      //   }
-      // });
 
       setUndo((prevUndo) => [...prevUndo, newNode]);
       setRedo([]);
