@@ -1,6 +1,6 @@
 import { DAYS_FLOW_DATA } from "@/components/days-flow/days-flow.types";
 import { atom } from "jotai";
-import { Edge } from "reactflow";
+import { Edge, ReactFlowInstance } from "reactflow";
 
 export const isNodeSelectedAtomStore = atom<boolean | null>(false);
 
@@ -47,6 +47,8 @@ export type REDO_UNDO_TYPE = {
 };
 export const undoWorkflowAtom = atom<REDO_UNDO_TYPE[]>([]);
 export const redoWorkflowAtom = atom<REDO_UNDO_TYPE[]>([]);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const reactflowInstanceAtom = atom<null | ReactFlowInstance>(null);
 
 export type VIEW_TYPE = "detailed" | "summary";
 
