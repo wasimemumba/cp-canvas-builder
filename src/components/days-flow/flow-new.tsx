@@ -33,7 +33,6 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import TempNode from "./temp-node";
 import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
-import GroupNode from "./group-node";
 import AddInitialNode from "./add-initial-node";
 import VidewTogglePanel from "./view-toggle-panel";
 import UndoRedoPanel from "./undo-redo-panel";
@@ -48,7 +47,6 @@ const nodeTypes = {
   questionnareNode: NodeCardRender,
   liveChatNode: NodeCardRender,
   tempNode: TempNode,
-  groupNode: GroupNode,
 };
 
 const edgeTypes = {

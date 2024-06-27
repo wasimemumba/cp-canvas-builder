@@ -1,4 +1,11 @@
+import { Node } from "reactflow";
 import { z } from "zod";
+import {
+  NODE_HANDLE_MAPPER_BY_TYPE,
+  NODE_ICONS_TYPE_MAPPER,
+  getHandle,
+  getIcon,
+} from "./days-flow-constants";
 
 export const formSchema = z.object({
   nodeType: z.string({
@@ -38,3 +45,62 @@ export const newNodeFormSchema = z.object({
   }),
   nodeTitle: z.string().optional(),
 });
+
+export const items = [
+  {
+    id: "sms",
+    label: "SMS",
+  },
+  {
+    id: "ivr",
+    label: "IVR",
+  },
+  {
+    id: "email",
+    label: "Email",
+  },
+] as const;
+
+export const getUpdatedNodes = (
+  nodes: Node[],
+  selectedAtomId: string | null,
+  values: z.infer<typeof formSchema>
+): Node[] => {
+  return nodes.map((node) => {
+    if (node.id === selectedAtomId) {
+      const parsecurrentNodeData = JSON.parse(node.data);
+      const parsedValues = {
+        ...values,
+        ...parsecurrentNodeData,
+        nodeTitle: values?.nodeTitle,
+        nodeDescription: values?.message,
+        nodeType: values?.nodeType,
+        contactType: values?.contactType,
+        isConfigured: values?.message?.length > 0,
+        nodeIcon: getIcon(
+          values?.nodeType as keyof typeof NODE_ICONS_TYPE_MAPPER
+        ),
+        handle: getHandle(
+          values?.nodeType as keyof typeof NODE_HANDLE_MAPPER_BY_TYPE
+        ),
+      };
+
+      node.data = JSON.stringify(parsedValues);
+    }
+
+    return node;
+  });
+};
+
+export const handleCheckboxChange = (
+  checked: boolean | string,
+  item: { id: string; label: string },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field: any
+) => {
+  if (checked) {
+    field.onChange([...field.value, item.id]);
+  } else {
+    field.onChange(field.value.filter((value: string) => value !== item.id));
+  }
+};
