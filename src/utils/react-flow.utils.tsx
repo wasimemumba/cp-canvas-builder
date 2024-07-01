@@ -1,11 +1,18 @@
-import { Node } from "reactflow";
+import { Edge, Node } from "reactflow";
 import { v4 as uuidv4 } from "uuid";
+import {
+  EMAIL_CONTACT,
+  IVR_CONTACT,
+  LIVE_CHAT_NODE,
+  SMS_CONTACT,
+} from "./days-flow-constants";
+import { EmailIcon, MessageIcon, PhoneIcon } from "./days-flow-icons";
 
 export const getTempNodes = (nodes: Node[]) => {
   return nodes
     .filter(
       (node) =>
-        node.type !== "liveChatNode" && JSON.parse(node.data)?.isConfigured
+        node.type !== LIVE_CHAT_NODE && JSON.parse(node.data)?.isConfigured
     )
     .map((node) => {
       const tempTargetId = uuidv4();
@@ -40,3 +47,21 @@ export const getTempNodes = (nodes: Node[]) => {
       };
     });
 };
+
+export const renderContactIcons = (contactTypes: string[] | undefined) => {
+  return contactTypes?.map((contactType) => {
+    if (contactType === SMS_CONTACT) {
+      return <MessageIcon />;
+    }
+    if (contactType === IVR_CONTACT) {
+      return <PhoneIcon />;
+    }
+    if (contactType === EMAIL_CONTACT) {
+      return <EmailIcon />;
+    }
+    return <></>;
+  });
+};
+
+export const filterEdgeById = (edges: Edge[], excludeId: string) =>
+  edges.filter((edge) => edge.id !== excludeId);

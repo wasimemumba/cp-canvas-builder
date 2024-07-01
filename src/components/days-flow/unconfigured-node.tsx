@@ -1,5 +1,16 @@
+import { useAtom, useAtomValue } from "jotai";
 import { useCallback } from "react";
 import { Handle, NodeTypes, Position, useReactFlow } from "reactflow";
+
+import {
+  BOTH_HANDLE,
+  SOURCE_HANDLE,
+  TARGET_HANDLE,
+  isSomething,
+  updateNewlyAddedNodeTitle,
+  updateNewlyAddedNodeType,
+} from "../../utils/days-flow-constants";
+import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -8,13 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { NODE_CARD_TYPE } from "./days-flow.types";
-import {
-  isSomething,
-  updateNewlyAddedNodeTitle,
-  updateNewlyAddedNodeType,
-} from "./days-flow-constants";
-import { useAtom, useAtomValue } from "jotai";
 import {
   daysWorkflowDataAtom,
   newNodeId,
@@ -52,7 +56,7 @@ const UnconfiguredNode = (props: UnconfiguredNodeProps) => {
         (workflow) => workflow?.day?.id === selectedWorkflowId
       );
 
-      if (getworkspace && isSomething(getworkspace)) {
+      if (isSomething(getworkspace)) {
         getworkspace.day.workflow = updatedNodes;
       }
 
@@ -154,25 +158,25 @@ const UnconfiguredNode = (props: UnconfiguredNodeProps) => {
         }}
       />
 
-      {handle === "target" && (
+      {handle === TARGET_HANDLE && (
         <>
           <Handle
-            type="target"
+            type={TARGET_HANDLE}
             position={Position?.Top}
             className="bg-transparent"
           />
         </>
       )}
 
-      {handle === "both" && (
+      {handle === BOTH_HANDLE && (
         <>
           <Handle
-            type="target"
+            type={TARGET_HANDLE}
             position={Position?.Top}
             className="bg-transparent"
           />
           <Handle
-            type="source"
+            type={SOURCE_HANDLE}
             position={Position?.Bottom}
             className="bg-transparent"
           />

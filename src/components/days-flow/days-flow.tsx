@@ -1,15 +1,15 @@
-import { ReactFlowProvider } from "reactflow";
-import { useCallback, useRef } from "react";
-
-import "reactflow/dist/style.css";
-import { useAtomValue } from "jotai";
+import { cn } from "@/lib/utils";
 import { daysWorkflowDataAtom, nodeIdAtom } from "@/store/workflow-atoms";
-import NodeFormSheet from "./node-form-sheet";
-import { Button } from "../ui/button";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
-import { TelevoxIcon } from "./days-flow-icons";
-import { downloadJsonFile, isSomething } from "./days-flow-constants";
+import { useAtomValue } from "jotai";
+import { useCallback, useRef } from "react";
+import { ReactFlowProvider } from "reactflow";
+
+import { downloadJsonFile, isSomething } from "../../utils/days-flow-constants";
+import { TelevoxIcon } from "../../utils/days-flow-icons";
+import { Button } from "../ui/button";
 import FlowNew from "./flow-new";
+import NodeFormSheet from "./node-form-sheet";
 
 const DaysFlow = () => {
   const reactFlowWrapper = useRef(null);
@@ -30,10 +30,10 @@ const DaysFlow = () => {
   return (
     <>
       <div
-        className={`h-[40px] flex flex-row justify-between items-center p-4 bg-white z-10 fixed top-0 w-full  
-          ${isSomething(nodeAtomId) && "w-[79%] rounded-r-xl"}
-        `}
-        style={{ width: nodeAtomId ? "79%" : "100%" }}
+        className={cn(
+          "h-[40px] flex flex-row justify-between items-center p-4 bg-white z-10 fixed top-0 w-full",
+          isSomething(nodeAtomId) && "w-[79%] rounded-r-xl"
+        )}
       >
         <TelevoxIcon />
 

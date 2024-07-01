@@ -1,8 +1,12 @@
 import { Edge, Node, Panel, addEdge, useReactFlow } from "reactflow";
 import Sidebar from "./sidebar";
 import { Button } from "../ui/button";
-import { RedoIcon, UndoIcon } from "./days-flow-icons";
-import { isSomething } from "./days-flow-constants";
+import { RedoIcon, UndoIcon } from "../../utils/days-flow-icons";
+import {
+  UNDO_ACTION_ADDED,
+  UNDO_ACTION_DELETED,
+  isSomething,
+} from "../../utils/days-flow-constants";
 import { redoAtom, undoAtom } from "@/store/workflow-atoms";
 import { useAtom } from "jotai";
 
@@ -27,25 +31,23 @@ const UndoRedoPanel = () => {
     }
 
     if (checkIfEdge(lastValue)) {
-      const filterFn = (edge: Edge) => edge.id !== lastValue.id;
-      const addFn = (prevEdges: Edge[]) => addEdge(lastValue, prevEdges);
+      const filterEdges = (edge: Edge) => edge.id !== lastValue.id;
 
-      if (lastValue.undoType === "added") {
-        setEdges((edges) => edges.filter(filterFn));
+      if (lastValue.undoType === UNDO_ACTION_ADDED) {
+        setEdges((edges) => edges.filter(filterEdges));
         setRedo((prevRedo) => [lastValue, ...prevRedo]);
       } else {
-        setEdges((prevEdges) => addFn(prevEdges));
+        setEdges((prevEdges) => addEdge(lastValue, prevEdges));
         setRedo((prevRedo) => [lastValue, ...prevRedo]);
       }
     } else {
-      const filterFn = (node: Node) => node.id !== lastValue.id;
-      const addFn = (prevNodes: Node[]) => [...prevNodes, lastValue];
+      const filterNodes = (node: Node) => node.id !== lastValue.id;
 
-      if (lastValue.undoType === "added") {
-        setNodes((prevNodes) => prevNodes.filter(filterFn));
+      if (lastValue.undoType === UNDO_ACTION_ADDED) {
+        setNodes((prevNodes) => prevNodes.filter(filterNodes));
         setRedo((prevRedo) => [lastValue, ...prevRedo]);
       } else {
-        setNodes((prevNodes) => addFn(prevNodes));
+        setNodes((prevNodes) => [...prevNodes, lastValue]);
         setRedo((prevRedo) => [lastValue, ...prevRedo]);
       }
     }
@@ -58,20 +60,23 @@ const UndoRedoPanel = () => {
       return;
     }
 
-    const filterFn = (item: Edge | Node) => item.id !== firstValue.id;
-    const addFn = (prevItems: Edge[] | Node[]) => [...prevItems, firstValue];
+    const filterRedo = (item: Edge | Node) => item.id !== firstValue.id;
+    const addToRedo = (prevItems: Edge[] | Node[]) => [
+      ...prevItems,
+      firstValue,
+    ];
 
-    if (firstValue.undoType === "deleted") {
+    if (firstValue.undoType === UNDO_ACTION_DELETED) {
       if (checkIfEdge(firstValue)) {
-        setEdges((edges) => edges.filter(filterFn));
+        setEdges((edges) => edges.filter(filterRedo));
       } else {
-        setNodes((prevNodes) => prevNodes.filter(filterFn));
+        setNodes((prevNodes) => prevNodes.filter(filterRedo));
       }
     } else {
       if (checkIfEdge(firstValue)) {
-        setEdges((prevEdges) => addFn(prevEdges));
+        setEdges((prevEdges) => addToRedo(prevEdges));
       } else {
-        setNodes((prevNodes) => addFn(prevNodes));
+        setNodes((prevNodes) => addToRedo(prevNodes));
       }
     }
 

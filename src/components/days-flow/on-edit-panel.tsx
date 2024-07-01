@@ -2,8 +2,8 @@ import { Panel, useReactFlow } from "reactflow";
 import { Button } from "../ui/button";
 import { daysWorkflowDataAtom, selectedDayAtom } from "@/store/workflow-atoms";
 import { useAtomValue, useSetAtom } from "jotai";
-import { edgesEdit, editTest } from "./temp-edit-test";
-import { isSomething } from "./days-flow-constants";
+import { edgesEdit, editTest } from "@/utils/temp-edit-test";
+import { isSomething } from "../../utils/days-flow-constants";
 
 const OnEditPanel = () => {
   const { setEdges, setNodes } = useReactFlow();
@@ -17,7 +17,7 @@ const OnEditPanel = () => {
     );
 
     if (
-      typeof nodesSelected !== "undefined" &&
+      nodesSelected &&
       isSomething(nodesSelected?.day) &&
       isSomething(nodesSelected)
     ) {

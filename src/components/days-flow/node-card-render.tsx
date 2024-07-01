@@ -1,26 +1,34 @@
 import {
-  Handle,
-  NodeProps,
-  Position,
-  useOnSelectionChange,
-  useReactFlow,
-  Node,
-} from "reactflow";
-import { getParsedNodeData, isSomething } from "./days-flow-constants";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
 import { currentViewAtom, newNodeId, nodeIdAtom } from "@/store/workflow-atoms";
-import { EmailIcon, MessageIcon, PhoneIcon } from "./days-flow-icons";
-import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
-import UnconfiguredNode from "./unconfigured-node";
-import NodeCardHeader from "./node-card-header";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Handle,
+  Node,
+  NodeProps,
+  Position,
+  useOnSelectionChange,
+  useReactFlow,
+} from "reactflow";
+
+import { getLayoutedElementsDagreOverlap } from "../../utils/dagree-layout";
+import {
+  BOTH_HANDLE,
+  DETAILED_VIEW,
+  SOURCE_HANDLE,
+  TARGET_HANDLE,
+  getParsedNodeData,
+  isSomething,
+} from "../../utils/days-flow-constants";
 import NodeCardAddNodeSelect from "./node-card-add-node-select";
+import NodeCardHeader from "./node-card-header";
+import UnconfiguredNode from "./unconfigured-node";
+import { renderContactIcons } from "@/utils/react-flow.utils";
 
 type NodeCardRenderProps = {
   data: string;
@@ -97,28 +105,18 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
         <>
           <NodeCardHeader parsedData={parsedData} id={id} />
 
-          {!isConfigured && currentView === "detailed" && (
+          {!isConfigured && currentView === DETAILED_VIEW && (
             <p className="text-xs text-[#BEBFC0]">Click to configure node</p>
           )}
 
           {isConfigured &&
             nodeDescription?.length >= 54 &&
-            currentView === "detailed" && (
+            currentView === DETAILED_VIEW && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="flex flex-row gap-1 justify-start items-center">
-                      {contactType?.map((cont) => {
-                        if (cont === "sms") {
-                          return <MessageIcon />;
-                        }
-                        if (cont === "ivr") {
-                          return <PhoneIcon />;
-                        }
-                        if (cont === "email") {
-                          return <EmailIcon />;
-                        }
-                      })}
+                      {renderContactIcons(contactType)}
                       <p className="text-xs text-[#777] truncate">
                         {nodeDescription}
                         ...
@@ -135,26 +133,16 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
 
           {isConfigured &&
             nodeDescription?.length <= 54 &&
-            currentView === "detailed" && (
+            currentView === DETAILED_VIEW && (
               <div className="flex flex-row gap-1 justify-start items-center">
-                {contactType?.map((cont) => {
-                  if (cont === "sms") {
-                    return <MessageIcon />;
-                  }
-                  if (cont === "ivr") {
-                    return <PhoneIcon />;
-                  }
-                  if (cont === "email") {
-                    return <EmailIcon />;
-                  }
-                })}
+                {renderContactIcons(contactType)}
                 <p className="text-xs text-[#777] truncate">
                   {nodeDescription}
                 </p>
               </div>
             )}
 
-          {handle === "target" && (
+          {handle === TARGET_HANDLE && (
             <div className="absolute -bottom-[60px] left-1/2 opacity-0">
               <NodeCardAddNodeSelect
                 parsedData={parsedData}
@@ -163,14 +151,14 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 id={id}
               />
               <Handle
-                type="target"
+                type={TARGET_HANDLE}
                 position={Position?.Top}
                 className="bg-transparent"
               />
             </div>
           )}
 
-          {handle !== "target" && (
+          {handle !== TARGET_HANDLE && (
             <div className="absolute -bottom-[60px] left-1/2">
               <NodeCardAddNodeSelect
                 parsedData={parsedData}
@@ -179,24 +167,24 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 id={id}
               />
 
-              {handle === "both" && (
+              {handle === BOTH_HANDLE && (
                 <>
                   <Handle
-                    type="target"
+                    type={TARGET_HANDLE}
                     position={Position?.Top}
                     className="bg-transparent"
                   />
                   <Handle
-                    type="source"
+                    type={SOURCE_HANDLE}
                     position={Position?.Bottom}
                     className="bg-transparent"
                   />
                 </>
               )}
-              {handle === "source" && (
+              {handle === SOURCE_HANDLE && (
                 <>
                   <Handle
-                    type="source"
+                    type={SOURCE_HANDLE}
                     position={Position?.Bottom}
                     className="bg-transparent"
                   />

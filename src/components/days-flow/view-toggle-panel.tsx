@@ -2,6 +2,7 @@ import { Panel } from "reactflow";
 import { Button } from "../ui/button";
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentViewAtom, nodeIdAtom } from "@/store/workflow-atoms";
+import { DETAILED_VIEW, SUMMARY_VIEW } from "@/utils/days-flow-constants";
 
 const VidewTogglePanel = () => {
   const setCurrentView = useSetAtom(currentViewAtom);
@@ -17,20 +18,20 @@ const VidewTogglePanel = () => {
     >
       <Button
         className={`text-[#777777] text-sm rounded-l-[5px] hover:text-[#00B2E3] ${
-          currentView === "summary" &&
+          currentView === SUMMARY_VIEW &&
           "bg-[#00B2E3] text-white hover:bg-opacity-70 hover:bg-[#00B2E3] hover:text-[white]"
         }`}
-        onClick={() => setCurrentView("summary")}
+        onClick={() => setCurrentView(SUMMARY_VIEW)}
       >
         Summary
       </Button>
 
       <Button
         className={`text-[#777777] text-sm rounded-r-[5px] hover:text-[#00B2E3] ${
-          currentView === "detailed" &&
+          currentView === DETAILED_VIEW &&
           "bg-[#00B2E3] text-white hover:bg-opacity-70 hover:bg-[#00B2E3] hover:text-[white]"
         }`}
-        onClick={() => setCurrentView("detailed")}
+        onClick={() => setCurrentView(DETAILED_VIEW)}
       >
         Detailed
       </Button>

@@ -1,10 +1,12 @@
-import { useMemo } from "react";
-import { Panel, useReactFlow, useViewport } from "reactflow";
-import { Button } from "../ui/button";
-import { MinusIcon, PlusIcon } from "./days-flow-icons";
-import { valueToPercentage } from "./days-flow-constants";
 import { nodeIdAtom } from "@/store/workflow-atoms";
 import { useAtomValue } from "jotai";
+import { useCallback, useMemo } from "react";
+import { Panel, useReactFlow, useViewport } from "reactflow";
+
+import { valueToPercentage } from "../../utils/days-flow-constants";
+import { MinusIcon, PlusIcon } from "../../utils/days-flow-icons";
+import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const ZoomPanel = () => {
   const { setViewport } = useReactFlow();
@@ -12,31 +14,34 @@ const ZoomPanel = () => {
   const valuePercentage = useMemo(() => valueToPercentage(zoom), [zoom]);
   const nodeAtomId = useAtomValue(nodeIdAtom);
 
+  const zoomOut = useCallback(() => {
+    setViewport({
+      zoom: zoom >= 0.5 ? Math.min(zoom - 0.25, 2) : 0.25,
+      x,
+      y,
+    });
+  }, [setViewport, x, y, zoom]);
+
+  const zoomIn = useCallback(() => {
+    setViewport({ zoom: Math.min(zoom + 0.25, 2), x, y });
+  }, [setViewport, x, y, zoom]);
+
   return (
     <Panel
       position="bottom-right"
-      className={`bg-white rounded-[5px] flex flex-row justify-start items-center  shadow-xl ${
-        nodeAtomId && "mr-[21%]"
-      } `}
+      className={cn(
+        "bg-white rounded-[5px] flex flex-row justify-start items-center shadow-xl",
+        {
+          "mr-[21%]": nodeAtomId,
+        }
+      )}
       key="zoom-menu-panel"
     >
-      <Button
-        onClick={() =>
-          setViewport({
-            zoom: zoom >= 0.5 ? Math.min(zoom - 0.25, 2) : 0.25,
-            x,
-            y,
-          })
-        }
-        disabled={valuePercentage === 0}
-      >
+      <Button onClick={zoomOut} disabled={valuePercentage === 0}>
         <MinusIcon />
       </Button>
       <span className="text-base text-[#777777]">{valuePercentage} %</span>
-      <Button
-        onClick={() => setViewport({ zoom: Math.min(zoom + 0.25, 2), x, y })}
-        disabled={valuePercentage === 100}
-      >
+      <Button onClick={zoomIn} disabled={valuePercentage === 100}>
         <PlusIcon />
       </Button>
     </Panel>

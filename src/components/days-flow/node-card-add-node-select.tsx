@@ -1,18 +1,3 @@
-import { PlusIconHandle, StraightLineSVG } from "./days-flow-icons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import {
-  NODES_WITH_TYPE_RENDERED,
-  NODE_ICONS_MAPPER,
-} from "./days-flow-constants";
-import { NodeTypes, addEdge, useReactFlow } from "reactflow";
-import { NODE_CARD_TYPE } from "./days-flow.types";
-import { v4 as uuidv4 } from "uuid";
 import {
   daysWorkflowDataAtom,
   newNodeId,
@@ -21,6 +6,24 @@ import {
   undoAtom,
 } from "@/store/workflow-atoms";
 import { useAtomValue, useSetAtom } from "jotai";
+import { NodeTypes, addEdge, useReactFlow } from "reactflow";
+import { v4 as uuidv4 } from "uuid";
+
+import {
+  BUTTON_EDGE,
+  NODES_WITH_TYPE_RENDERED,
+  NODE_ICONS_MAPPER,
+  UNDO_ACTION_ADDED,
+} from "../../utils/days-flow-constants";
+import { PlusIconHandle, StraightLineSVG } from "../../utils/days-flow-icons";
+import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 type NodeCardAddNodeSelectType = {
   parsedData: NodeTypes & NODE_CARD_TYPE;
@@ -51,7 +54,7 @@ const NodeCardAddNodeSelect = (props: NodeCardAddNodeSelectType) => {
       id: newNodeId,
       nodeType: nodeType,
       data: JSON.stringify(newNodeToAdd),
-      undoType: "added",
+      undoType: UNDO_ACTION_ADDED,
       position: { x: xPos, y: yPos + 150 },
       type: nodeType,
     };
@@ -63,8 +66,8 @@ const NodeCardAddNodeSelect = (props: NodeCardAddNodeSelectType) => {
       id: uuidv4(),
       source: id,
       target: newNodeId,
-      type: "buttonEdge",
-      undoType: "added",
+      type: BUTTON_EDGE,
+      undoType: UNDO_ACTION_ADDED,
     };
 
     setEdges((prevEdges) => addEdge(autoEdge, prevEdges));

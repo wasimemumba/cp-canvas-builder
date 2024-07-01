@@ -1,24 +1,3 @@
-import { DragEvent, useCallback, useEffect, useState } from "react";
-import ReactFlow, {
-  Connection,
-  ReactFlowProps,
-  addEdge,
-  useEdgesState,
-  useNodesState,
-  useReactFlow,
-} from "reactflow";
-import NodeCardRender from "./node-card-render";
-
-import {
-  checkIfNodesConfigured,
-  findClosestNode,
-  getTempNodesForConfiguredNodes,
-  initialEdges,
-  initialNodes,
-  isSomething,
-} from "./days-flow-constants";
-import CustomEdge from "./custom-edge";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   daysWorkflowDataAtom,
   newNodeId,
@@ -31,29 +10,41 @@ import {
   undoAtom,
   workflowEdgesAtom,
 } from "@/store/workflow-atoms";
-import { v4 as uuidv4 } from "uuid";
-import TempNode from "./temp-node";
-import { getLayoutedElementsDagreOverlap } from "./dagree-layout";
-import AddInitialNode from "./add-initial-node";
-import VidewTogglePanel from "./view-toggle-panel";
-import UndoRedoPanel from "./undo-redo-panel";
-import OnEditPanel from "./on-edit-panel";
-import ZoomPanel from "./zoom-panel";
 import { getTempNodes } from "@/utils/react-flow.utils";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { DragEvent, useCallback, useEffect, useState } from "react";
+import ReactFlow, {
+  Connection,
+  ReactFlowProps,
+  addEdge,
+  useEdgesState,
+  useNodesState,
+  useReactFlow,
+} from "reactflow";
+import { v4 as uuidv4 } from "uuid";
+
+import { getLayoutedElementsDagreOverlap } from "../../utils/dagree-layout";
+import {
+  BUTTON_EDGE,
+  INITIAL_NODE,
+  TEMP_EDGE,
+  TEMP_NODE,
+  UNDO_ACTION_ADDED,
+  checkIfNodesConfigured,
+  edgeTypes,
+  findClosestNode,
+  getTempNodesForConfiguredNodes,
+  initialEdges,
+  initialNodes,
+  isSomething,
+  nodeTypes,
+} from "../../utils/days-flow-constants";
+import AddInitialNode from "./add-initial-node";
 import DaysPanel from "./days-panel";
-
-const nodeTypes = {
-  initialNode: NodeCardRender,
-  messagePatientNode: NodeCardRender,
-  questionnareNode: NodeCardRender,
-  liveChatNode: NodeCardRender,
-  tempNode: TempNode,
-};
-
-const edgeTypes = {
-  buttonEdge: CustomEdge,
-  tempEdge: CustomEdge,
-};
+import OnEditPanel from "./on-edit-panel";
+import UndoRedoPanel from "./undo-redo-panel";
+import VidewTogglePanel from "./view-toggle-panel";
+import ZoomPanel from "./zoom-panel";
 
 const FlowNew = (props: ReactFlowProps) => {
   const { getNodes } = useReactFlow();
@@ -85,8 +76,8 @@ const FlowNew = (props: ReactFlowProps) => {
         ...connection,
         animated: false,
         id: uuidv4(),
-        type: "buttonEdge",
-        undoType: "added",
+        type: BUTTON_EDGE,
+        undoType: UNDO_ACTION_ADDED,
       };
 
       setEdges((prevEdges) => addEdge(edge, prevEdges));
@@ -145,7 +136,7 @@ const FlowNew = (props: ReactFlowProps) => {
         id: newNodeId,
         type,
         data,
-        undoType: "added",
+        undoType: UNDO_ACTION_ADDED,
         position,
         ...(isSomething(closestTemporaryNodeFound) && {
           position: {
@@ -164,8 +155,8 @@ const FlowNew = (props: ReactFlowProps) => {
             id: uuidv4(),
             source: closestTemporaryNodeFound?.sourceId,
             target: newNodeId,
-            type: "buttonEdge",
-            undoType: "added",
+            type: BUTTON_EDGE,
+            undoType: UNDO_ACTION_ADDED,
           };
 
           setEdges((prevEdges) => addEdge(autoEdge, prevEdges));
@@ -181,23 +172,23 @@ const FlowNew = (props: ReactFlowProps) => {
         if (getworkspace && isSomething(getworkspace)) {
           const allNodes = getNodes();
           const filterTempNodes = allNodes.filter(
-            (node) => node.type !== "tempNode"
+            (node) => node.type !== TEMP_NODE
           );
           const nodesToSave = [...filterTempNodes, newNode];
           getworkspace.day.workflow = nodesToSave;
 
           const parsedNodeData = JSON.parse(data);
-          if (parsedNodeData?.nodeType !== "initialNode") {
+          if (parsedNodeData?.nodeType !== INITIAL_NODE) {
             setNewNodeId(newNodeId);
           }
         }
       }
 
       setNodes((prevNodes) =>
-        prevNodes.filter((node) => node.type !== "tempNode")
+        prevNodes.filter((node) => node.type !== TEMP_NODE)
       );
       setEdges((prevEdges) =>
-        prevEdges.filter((edge) => edge.type !== "tempEdge")
+        prevEdges.filter((edge) => edge.type !== TEMP_EDGE)
       );
 
       setOnDragging(false);
@@ -222,7 +213,7 @@ const FlowNew = (props: ReactFlowProps) => {
 
   useEffect(() => {
     if (temporaryNodesArray && nodes.length > 1) {
-      const hasTempNode = nodes.some((n) => n.type === "tempNode");
+      const hasTempNode = nodes.some((n) => n.type === TEMP_NODE);
 
       if (hasTempNode) {
         const { nodes: layoutedNodes, edges: layoutedEdges } =
@@ -242,8 +233,8 @@ const FlowNew = (props: ReactFlowProps) => {
 
       if (
         nodesSelected &&
-        isSomething(nodesSelected?.day) &&
-        isSomething(nodesSelected)
+        isSomething(nodesSelected) &&
+        isSomething(nodesSelected?.day)
       ) {
         const { workflow } = nodesSelected.day;
         setNodes(workflow);
@@ -275,15 +266,15 @@ const FlowNew = (props: ReactFlowProps) => {
     const tempEdges = tempraryNodes.map((node) => node.tempEdge);
     setNodes((prevNodes) => [...prevNodes, ...tempNodes]);
     setEdges((prevEdges) => [...prevEdges, ...tempEdges]);
-    setTemporaryNodes(tempraryNodes.map((node) => node.tempNode));
+    setTemporaryNodes([...tempNodes]);
   }, [nodes, setEdges, setNodes]);
 
   const onDagExit = useCallback(() => {
     setNodes((prevNodes) =>
-      prevNodes.filter((node) => node.type !== "tempNode")
+      prevNodes.filter((node) => node.type !== TEMP_NODE)
     );
     setEdges((prevEdges) =>
-      prevEdges.filter((edge) => edge.type !== "tempEdge")
+      prevEdges.filter((edge) => edge.type !== TEMP_EDGE)
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

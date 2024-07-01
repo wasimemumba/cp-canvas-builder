@@ -5,6 +5,9 @@ import {
   selectedDayAtom,
   undoAtom,
 } from "@/store/workflow-atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+
+import { BreadCrumbIcon } from "../../utils/days-flow-icons";
 import {
   Menubar,
   MenubarContent,
@@ -12,8 +15,6 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "../ui/menubar";
-import { BreadCrumbIcon } from "./days-flow-icons";
-import { useAtomValue, useSetAtom } from "jotai";
 
 const DaysMenu = () => {
   const daysWorkflow = useAtomValue(daysWorkflowDataAtom);

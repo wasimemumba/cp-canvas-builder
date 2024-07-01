@@ -7,42 +7,9 @@ import {
 } from "@/components/ui/popover";
 import { Toggle } from "@/components/ui/toggle";
 import NodeCard from "./node-card";
-import { NODE_CARD_TYPE } from "./days-flow.types";
 import { nodesConfigured } from "@/store/workflow-atoms";
 import { useAtomValue } from "jotai";
-
-const NODES_CARD_WITH_TYPE: NODE_CARD_TYPE[] = [
-  {
-    nodeIcon: "dialogue",
-    nodeTitle: "Dialogue Start",
-    nodeDescription:
-      "Marks the start of a new dialog tree and defines trigger time",
-    nodeType: "initialNode",
-    handle: "source",
-  },
-  {
-    nodeIcon: "message",
-    nodeTitle: "Message Patient",
-    nodeDescription: "Send an SMS, IVR or Email message to the Patient",
-    nodeType: "messagePatientNode",
-    handle: "both",
-  },
-  {
-    nodeIcon: "question",
-    nodeTitle: "Questionnaire",
-    nodeDescription:
-      "Select a survey template to send to the Patient via SMS/Email",
-    nodeType: "questionnareNode",
-    handle: "both",
-  },
-  {
-    nodeIcon: "chat",
-    nodeTitle: "Live Chat",
-    nodeDescription: "Start a Live chat with patient",
-    nodeType: "liveChatNode",
-    handle: "target",
-  },
-];
+import { NODES_CARD_WITH_TYPE } from "@/utils/days-flow-constants";
 
 const Sidebar = () => {
   const allNodesConfigured = useAtomValue(nodesConfigured);

@@ -14,7 +14,7 @@ import {
   checkIfNodesConfigured,
   getParsedNodeData,
   isSomething,
-} from "./days-flow-constants";
+} from "../../utils/days-flow-constants";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,7 @@ import {
   getUpdatedNodes,
   handleCheckboxChange,
   items,
-} from "./day-flow-form.utils";
+} from "@/utils/day-flow-form.utils";
 import {
   Form,
   FormControl,
@@ -66,12 +66,10 @@ const NodeConfigurationForm = () => {
   );
 
   const isNodeConnected = useMemo(() => {
-    if (typeof selectedAtomId === "string") {
-      return workflowEdges?.some(
-        (edge: Edge) =>
-          edge.source === selectedAtomId || edge.target === selectedAtomId
-      );
-    }
+    return workflowEdges?.some(
+      (edge: Edge) =>
+        edge.source === selectedAtomId || edge.target === selectedAtomId
+    );
   }, [workflowEdges, selectedAtomId]);
 
   const form = useForm<z.infer<typeof formSchema>>({

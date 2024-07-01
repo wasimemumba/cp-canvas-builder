@@ -1,5 +1,11 @@
 import { ControllerRenderProps } from "react-hook-form";
 import { SelectContent, SelectItem } from "../ui/select";
+import {
+  INITIAL_NODE,
+  LIVE_CHAT_NODE,
+  MESSAGE_PATIENT_NODE,
+  QUESTIONNAIRE_NODE,
+} from "@/utils/days-flow-constants";
 
 type testType = {
   field: ControllerRenderProps<
@@ -21,33 +27,33 @@ const NodeConfigurationFormSelectItems = (props: testType) => {
   return (
     <SelectContent className="bg-white rounded-[4px] p-0 m-0 w-full">
       <SelectItem
-        value="initialNode"
+        value={INITIAL_NODE}
         className={`focus:bg-[#BEBFC0] focus:bg-opacity-30 text-[#2A2D2E] ${
-          field.value === "initialNode" && "bg-[#00B2E3] bg-opacity-20"
+          field.value === INITIAL_NODE && "bg-[#00B2E3] bg-opacity-20"
         } w-full m-0 `}
       >
         Dialogue Start
       </SelectItem>
       <SelectItem
-        value="messagePatientNode"
+        value={MESSAGE_PATIENT_NODE}
         className={`focus:bg-[#BEBFC0] focus:bg-opacity-30 text-[#2A2D2E] ${
-          field.value === "messagePatientNode" && "bg-[#00B2E3] bg-opacity-20"
+          field.value === MESSAGE_PATIENT_NODE && "bg-[#00B2E3] bg-opacity-20"
         } w-full m-0 `}
       >
         Message Patient
       </SelectItem>
       <SelectItem
-        value="questionnareNode"
+        value={QUESTIONNAIRE_NODE}
         className={`focus:bg-[#BEBFC0] focus:bg-opacity-30 text-[#2A2D2E] ${
-          field.value === "questionnareNode" && "bg-[#00B2E3] bg-opacity-20"
+          field.value === QUESTIONNAIRE_NODE && "bg-[#00B2E3] bg-opacity-20"
         } w-full m-0 `}
       >
         Questionnaire
       </SelectItem>
       <SelectItem
-        value="liveChatNode"
+        value={LIVE_CHAT_NODE}
         className={`focus:bg-[#BEBFC0] focus:bg-opacity-30 text-[#2A2D2E] ${
-          field.value === "liveChatNode" && "bg-[#00B2E3] bg-opacity-20"
+          field.value === LIVE_CHAT_NODE && "bg-[#00B2E3] bg-opacity-20"
         } w-full m-0 `}
       >
         Live Chat

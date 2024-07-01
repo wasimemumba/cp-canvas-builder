@@ -5,7 +5,7 @@ import {
   NODE_ICONS_TYPE_MAPPER,
   getHandle,
   getIcon,
-} from "./days-flow-constants";
+} from "@/utils/days-flow-constants";
 
 export const formSchema = z.object({
   nodeType: z.string({

@@ -1,12 +1,18 @@
-import { useMemo } from "react";
+import { nodeIdAtom, redoAtom, undoAtom } from "@/store/workflow-atoms";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { useSetAtom } from "jotai";
+import { useMemo } from "react";
+import { NodeTypes, useReactFlow } from "reactflow";
+
 import {
+  INITIAL_NODE,
   NODE_ICONS_MAPPER,
+  UNDO_ACTION_DELETED,
   isSomething,
   processGraph,
-} from "./days-flow-constants";
-import { NodeTypes, useReactFlow } from "reactflow";
-import { NODE_CARD_TYPE } from "./days-flow.types";
+} from "../../utils/days-flow-constants";
+import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -17,9 +23,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
-import { useSetAtom } from "jotai";
-import { nodeIdAtom, redoAtom, undoAtom } from "@/store/workflow-atoms";
 
 type NodeCardHeaderType = {
   parsedData: NodeTypes & NODE_CARD_TYPE;
@@ -43,7 +46,7 @@ const NodeCardHeader = (props: NodeCardHeaderType) => {
 
     setUndo((prevUndo) => [
       ...prevUndo,
-      { ...deletedNode, undoType: "deleted" },
+      { ...deletedNode, undoType: UNDO_ACTION_DELETED },
     ]);
 
     setAtomId(null);
@@ -53,14 +56,11 @@ const NodeCardHeader = (props: NodeCardHeaderType) => {
     const allTargets = processGraph(edges, id);
     allTargets.push(id);
 
-    const dependentNodes = allTargets?.map((targetId) => {
-      const foundNode = nodes?.find((node) => node?.id === targetId);
+    const dependentNodes = allTargets?.map((targetId) => ({
+      id: targetId,
+      foundNode: nodes?.find((node) => node?.id === targetId),
+    }));
 
-      return {
-        id: targetId,
-        foundNode,
-      };
-    });
     deleteElements({ nodes: dependentNodes, edges: [] });
 
     setUndo([]);
@@ -69,7 +69,7 @@ const NodeCardHeader = (props: NodeCardHeaderType) => {
   };
 
   const isStartNode = useMemo(() => {
-    return parsedData?.nodeType === "initialNode";
+    return parsedData?.nodeType === INITIAL_NODE;
   }, [parsedData?.nodeType]);
 
   return (

@@ -1,6 +1,6 @@
 import dagre from "@dagrejs/dagre";
 import { Edge, Node, Position } from "reactflow";
-import { isSomething } from "./days-flow-constants";
+import { LIVE_CHAT_NODE, isSomething } from "./days-flow-constants";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -138,7 +138,7 @@ export const getLayoutedElementsDagreOverlap = (
     node.targetPosition = Position.Top;
     node.sourcePosition = Position.Bottom;
 
-    if (node.type === "liveChatNode") {
+    if (node.type === LIVE_CHAT_NODE) {
       node.position = {
         x: nodeWithPosition.x - nodeWidth / 2,
         y: nodeWithPosition.y - nodeHeight / 2,
@@ -209,7 +209,7 @@ export const getLayoutedElementsDagreOverlapGroup = (
       node.targetPosition = Position.Top;
       node.sourcePosition = Position.Bottom;
 
-      if (node.type === "liveChatNode") {
+      if (node.type === LIVE_CHAT_NODE) {
         node.position = {
           x: nodeWithPosition.x - nodeWidth / 2,
           y: nodeWithPosition.y - nodeHeight + 500,

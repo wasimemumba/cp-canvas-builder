@@ -1,27 +1,35 @@
-import { onDragging } from "@/store/workflow-atoms";
+import { cn } from "@/lib/utils";
 import { useAtomValue } from "jotai";
 import { Handle, NodeProps, Position } from "reactflow";
+
+import { onDragging } from "@/store/workflow-atoms";
+import { TEMP_NODE_DATA_RELEASE } from "@/utils/days-flow-constants";
+import { useMemo } from "react";
 
 const TempNode = (props: NodeProps) => {
   const { id, data } = props;
 
-  const nearNode: boolean = data === "Release to create a new node";
+  const nearNode = useMemo(() => data === TEMP_NODE_DATA_RELEASE, [data]);
 
   const isDragging = useAtomValue(onDragging);
 
   return (
     <div
       key={id}
-      className={`w-[350px] bg-white p-3 border  ${
-        nearNode ? "border-[#00B2E3]" : "border-[#CCC]"
-      } rounded-xl border-dashed h-[48px] ${
-        isDragging && "pointer-events-none"
-      }`}
+      className={cn(
+        "w-[350px] bg-white p-3 border rounded-xl border-dashed h-[48px]",
+        {
+          "border-[#00B2E3]": nearNode,
+          "border-[#CCC]": !nearNode,
+          "pointer-events-none": isDragging,
+        }
+      )}
     >
       <p
-        className={`text-xs  ${
-          nearNode ? "text-[#00B2E3]" : "text-[#777777]"
-        } text-center`}
+        className={cn("text-xs text-center", {
+          "text-[#00B2E3]": nearNode,
+          "text-[#777777]": !nearNode,
+        })}
       >
         {data}
       </p>

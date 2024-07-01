@@ -1,7 +1,3 @@
-import { useCallback } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
-import { Button } from "../ui/button";
-import { PlusIconMain } from "./days-flow-icons";
 import {
   daysWorkflowDataAtom,
   reactflowInstanceAtom,
@@ -9,8 +5,18 @@ import {
   selectedDayAtom,
   undoAtom,
 } from "@/store/workflow-atoms";
-import { v4 as uuidv4 } from "uuid";
+import {
+  INITIAL_NODE,
+  UNDO_ACTION_ADDED,
+  newNodeToAdd,
+} from "@/utils/days-flow-constants";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback } from "react";
 import { useReactFlow } from "reactflow";
+import { v4 as uuidv4 } from "uuid";
+
+import { PlusIconMain } from "../../utils/days-flow-icons";
+import { Button } from "../ui/button";
 
 const AddInitialNode = () => {
   const { setNodes } = useReactFlow();
@@ -30,25 +36,15 @@ const AddInitialNode = () => {
         y: 200,
       };
 
-      const newNodeToAdd = {
-        nodeIcon: "dialogue",
-        nodeTitle: "Dialogue Start",
-        nodeDescription:
-          "Marks the start of a new dialog tree and defines trigger time",
-        nodeType: "initialNode",
-        handle: "source",
-        isConfigured: false,
-      };
-
       const newNodeId = uuidv4();
 
       const newNode = {
         id: newNodeId,
-        nodeType: "initialNode",
+        nodeType: INITIAL_NODE,
         data: JSON.stringify(newNodeToAdd),
-        undoType: "added",
+        undoType: UNDO_ACTION_ADDED,
         position,
-        type: "initialNode",
+        type: INITIAL_NODE,
       };
 
       setNodes((prevNodes) => [...prevNodes, newNode]);
