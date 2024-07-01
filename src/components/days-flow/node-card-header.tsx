@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { NODE_ICONS_MAPPER, processGraph } from "./days-flow-constants";
+import {
+  NODE_ICONS_MAPPER,
+  isSomething,
+  processGraph,
+} from "./days-flow-constants";
 import { NodeTypes, useReactFlow } from "reactflow";
 import { NODE_CARD_TYPE } from "./days-flow.types";
 import {
@@ -73,7 +77,9 @@ const NodeCardHeader = (props: NodeCardHeaderType) => {
       <div className="flex flex-row justify-start items-center gap-2">
         {NODE_ICONS_MAPPER[nodeIcon]}
 
-        <h2 className="text-[#2A2D2E] text-sm font-medium">{nodeTitle}</h2>
+        <h2 className="text-[#2A2D2E] text-sm font-medium">
+          {isSomething(nodeTitle) ? nodeTitle : parsedData?.nodeType}
+        </h2>
       </div>
       {!isStartNode && (
         <TrashIcon

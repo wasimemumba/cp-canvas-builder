@@ -170,3 +170,69 @@ export const checkIfNodesConfigured = (nodes: Node[]): boolean => {
 
   return nodesStatus.every((node) => node === true);
 };
+
+export const getTempNodesForConfiguredNodes = (
+  nodes: Node[],
+  closestNodeFound: Node | null
+): Node[] => {
+  return nodes?.map((node) => {
+    if (node?.id === closestNodeFound?.id && node?.type === "tempNode") {
+      node.data = closestNodeFound
+        ? "Release to create a new node"
+        : "Drag here to create new node";
+    }
+    return node;
+  });
+};
+
+export const updateNewlyAddedNodeType = (
+  nodes: Node[],
+  newlyAddedNodeId: string,
+  nodeType: string
+): Node[] => {
+  return nodes.map((node) => {
+    if (node.id === newlyAddedNodeId) {
+      const parsedNodeData = JSON.parse(node.data);
+
+      const updatedNodeData = {
+        ...parsedNodeData,
+        handle: getHandle(nodeType as keyof typeof NODE_HANDLE_MAPPER_BY_TYPE),
+        nodeType,
+      };
+
+      const stringifyData = JSON.stringify(updatedNodeData);
+
+      return {
+        ...node,
+        data: stringifyData,
+        type: nodeType,
+      };
+    }
+    return node;
+  });
+};
+
+export const updateNewlyAddedNodeTitle = (
+  nodes: Node[],
+  newlyAddedNodeId: string,
+  nodeTitle: string
+): Node[] => {
+  return nodes.map((node) => {
+    if (node.id === newlyAddedNodeId) {
+      const parseCurrentNodeData = JSON.parse(node.data);
+
+      const updatedNodeData = {
+        ...parseCurrentNodeData,
+        nodeTitle,
+      };
+
+      const stringifyData = JSON.stringify(updatedNodeData);
+
+      return {
+        ...node,
+        data: stringifyData,
+      };
+    }
+    return node;
+  });
+};

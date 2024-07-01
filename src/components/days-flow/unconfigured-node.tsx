@@ -10,15 +10,16 @@ import {
 } from "../ui/select";
 import { NODE_CARD_TYPE } from "./days-flow.types";
 import {
-  NODE_HANDLE_MAPPER_BY_TYPE,
-  getHandle,
   isSomething,
+  updateNewlyAddedNodeTitle,
+  updateNewlyAddedNodeType,
 } from "./days-flow-constants";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import {
   daysWorkflowDataAtom,
   newNodeId,
   selectedDayAtom,
+  undoAtom,
 } from "@/store/workflow-atoms";
 
 type UnconfiguredNodeProps = {
@@ -32,79 +33,81 @@ const UnconfiguredNode = (props: UnconfiguredNodeProps) => {
   const daysWorkflow = useAtomValue(daysWorkflowDataAtom);
   const newelyAddedNodeId = useAtomValue(newNodeId);
   const selectedWorkflowId = useAtomValue(selectedDayAtom);
+  const [undoValue, setUndoValue] = useAtom(undoAtom);
 
   const { handle } = parsedData;
 
   const onNodeTypeChange = useCallback(
     (nodeType: string) => {
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === newelyAddedNodeId) {
-            const parsecurrentNodeData = JSON.parse(node.data);
-
-            const parsedValues = {
-              ...parsecurrentNodeData,
-              handle: getHandle(
-                nodeType as keyof typeof NODE_HANDLE_MAPPER_BY_TYPE
-              ),
-              nodeType,
-            };
-
-            const stringifyData = JSON.stringify(parsedValues);
-
-            node.data = stringifyData;
-            node.type = nodeType;
-          }
-
-          return node;
-        })
+      const nodes = getNodes();
+      const updatedNodes = updateNewlyAddedNodeType(
+        nodes,
+        newelyAddedNodeId,
+        nodeType
       );
 
-      const nodes = getNodes();
+      setNodes([...updatedNodes]);
 
       const getworkspace = daysWorkflow?.find(
         (workflow) => workflow?.day?.id === selectedWorkflowId
       );
 
       if (getworkspace && isSomething(getworkspace)) {
-        getworkspace.day.workflow = nodes;
+        getworkspace.day.workflow = updatedNodes;
       }
+
+      const updateUndoValues = updateNewlyAddedNodeType(
+        undoValue,
+        newelyAddedNodeId,
+        nodeType
+      );
+
+      setUndoValue(updateUndoValues);
     },
-    [daysWorkflow, getNodes, newelyAddedNodeId, selectedWorkflowId, setNodes]
+    [
+      daysWorkflow,
+      getNodes,
+      newelyAddedNodeId,
+      selectedWorkflowId,
+      setNodes,
+      setUndoValue,
+      undoValue,
+    ]
   );
 
   const onNodeTitleChange = useCallback(
     (nodeTitle: string) => {
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === newelyAddedNodeId) {
-            const parsecurrentNodeData = JSON.parse(node.data);
-
-            const parsedValues = {
-              ...parsecurrentNodeData,
-              nodeTitle,
-            };
-
-            const stringifyData = JSON.stringify(parsedValues);
-
-            node.data = stringifyData;
-          }
-
-          return node;
-        })
-      );
-
       const nodes = getNodes();
+      const updatedNodes = updateNewlyAddedNodeTitle(
+        nodes,
+        newelyAddedNodeId,
+        nodeTitle
+      );
+      setNodes([...updatedNodes]);
 
       const getworkspace = daysWorkflow?.find(
         (workflow) => workflow?.day?.id === selectedWorkflowId
       );
 
-      if (typeof getworkspace !== "undefined" && isSomething(getworkspace)) {
-        getworkspace.day.workflow = nodes;
+      if (getworkspace && isSomething(getworkspace)) {
+        getworkspace.day.workflow = updatedNodes;
       }
+
+      const updatedUndoValues = updateNewlyAddedNodeTitle(
+        nodes,
+        newelyAddedNodeId,
+        nodeTitle
+      );
+      setUndoValue(updatedUndoValues);
     },
-    [daysWorkflow, getNodes, newelyAddedNodeId, selectedWorkflowId, setNodes]
+    [
+      daysWorkflow,
+      getNodes,
+      newelyAddedNodeId,
+      selectedWorkflowId,
+      setNodes,
+      setUndoValue,
+    ]
   );
 
   return (

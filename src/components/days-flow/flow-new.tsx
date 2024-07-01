@@ -12,6 +12,7 @@ import NodeCardRender from "./node-card-render";
 import {
   checkIfNodesConfigured,
   findClosestNode,
+  getTempNodesForConfiguredNodes,
   initialEdges,
   initialNodes,
   isSomething,
@@ -108,20 +109,16 @@ const FlowNew = (props: ReactFlowProps) => {
 
       const closestNodeFound = findClosestNode(temporaryNodesArray, position);
 
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === closestNodeFound?.id && node.type === "tempNode") {
-            node.data = closestNodeFound
-              ? "Release to create a new node"
-              : "Drag here to create new node";
-          }
-          return node;
-        })
+      const addTempNodesToConfiguredNodes = getTempNodesForConfiguredNodes(
+        nodes,
+        closestNodeFound
       );
 
+      setNodes(addTempNodesToConfiguredNodes);
       setClosestTemporaryNodeFound(closestNodeFound);
     },
-    [reactFlowInstance, setNodes, temporaryNodesArray]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [nodes.length, reactFlowInstance, setNodes, temporaryNodesArray]
   );
 
   const onDrop = useCallback(
@@ -196,17 +193,23 @@ const FlowNew = (props: ReactFlowProps) => {
         }
       }
 
-      setNodes((nodes) => nodes.filter((node) => node.type !== "tempNode"));
-      setEdges((edges) => edges.filter((edge) => edge.type !== "tempEdge"));
+      setNodes((prevNodes) =>
+        prevNodes.filter((node) => node.type !== "tempNode")
+      );
+      setEdges((prevEdges) =>
+        prevEdges.filter((edge) => edge.type !== "tempEdge")
+      );
 
       setOnDragging(false);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       reactFlowInstance,
       closestTemporaryNodeFound,
       nodes.length,
       setNodes,
       setEdges,
+      edges.length,
       setOnDragging,
       setUndo,
       setRedo,
@@ -268,19 +271,23 @@ const FlowNew = (props: ReactFlowProps) => {
 
   const onDragEnter = useCallback(() => {
     const tempraryNodes = getTempNodes(nodes);
-
-    tempraryNodes.forEach((tempNode) => {
-      setNodes((prevNodes) => [...prevNodes, tempNode.tempNode]);
-      setEdges((prevEdges) => addEdge(tempNode.tempEdge, prevEdges));
-    });
-
+    const tempNodes = tempraryNodes.map((node) => node.tempNode);
+    const tempEdges = tempraryNodes.map((node) => node.tempEdge);
+    setNodes((prevNodes) => [...prevNodes, ...tempNodes]);
+    setEdges((prevEdges) => [...prevEdges, ...tempEdges]);
     setTemporaryNodes(tempraryNodes.map((node) => node.tempNode));
   }, [nodes, setEdges, setNodes]);
 
   const onDagExit = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.type !== "tempNode"));
-    setEdges((edges) => edges.filter((edge) => edge.type !== "tempEdge"));
-  }, [setEdges, setNodes]);
+    setNodes((prevNodes) =>
+      prevNodes.filter((node) => node.type !== "tempNode")
+    );
+    setEdges((prevEdges) =>
+      prevEdges.filter((edge) => edge.type !== "tempEdge")
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edges.length, nodes.length, setEdges, setNodes]);
 
   return (
     <>
