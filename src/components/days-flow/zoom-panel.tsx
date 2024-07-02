@@ -32,7 +32,7 @@ const ZoomPanel = () => {
       className={cn(
         "bg-white rounded-[5px] flex flex-row justify-start items-center shadow-xl",
         {
-          "mr-[21%]": nodeAtomId,
+          "mr-[324px]": nodeAtomId,
         }
       )}
       key="zoom-menu-panel"

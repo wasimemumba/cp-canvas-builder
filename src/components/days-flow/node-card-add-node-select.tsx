@@ -79,8 +79,8 @@ const NodeCardAddNodeSelect = (props: NodeCardAddNodeSelectType) => {
     });
 
     setUndo((prevUndo) => [...prevUndo, newNode]);
-    setRedo([]);
     setNewlyAddedNodeId(newNodeId);
+    setRedo([]);
   };
 
   return (

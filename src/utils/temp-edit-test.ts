@@ -1,5 +1,5 @@
 import { Edge, Position } from "reactflow";
-import { DAYS_FLOW_DATA } from "./days-flow.types";
+import { DAYS_FLOW_DATA } from "./types/days-flow.types";
 
 export const editTest: DAYS_FLOW_DATA[] = [
   {

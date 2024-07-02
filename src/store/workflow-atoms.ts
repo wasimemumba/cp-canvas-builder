@@ -1,4 +1,4 @@
-import { DAYS_FLOW_DATA } from "@/components/days-flow/days-flow.types";
+import { DAYS_FLOW_DATA } from "@/utils/types/days-flow.types";
 import { atom } from "jotai";
 import { Edge, ReactFlowInstance } from "reactflow";
 

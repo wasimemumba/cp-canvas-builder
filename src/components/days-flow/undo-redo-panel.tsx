@@ -9,46 +9,36 @@ import {
 } from "../../utils/days-flow-constants";
 import { redoAtom, undoAtom } from "@/store/workflow-atoms";
 import { useAtom } from "jotai";
+import { checkIfEdge } from "@/utils/react-flow.utils";
 
 const UndoRedoPanel = () => {
   const { setEdges, setNodes } = useReactFlow();
   const [redoValue, setRedo] = useAtom(redoAtom);
   const [undoValue, setUndo] = useAtom(undoAtom);
 
-  const checkIfEdge = (value: Edge | Node) => {
-    if (Object.prototype.hasOwnProperty.call(value, "targetHandle")) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const onUndo = () => {
     const lastValue = undoValue?.pop();
 
-    if (!lastValue || !isSomething(lastValue)) {
+    if (!isSomething(lastValue)) {
       return;
     }
-
+    const filterUndo = (item: Edge | Node) => item.id !== lastValue.id;
+    const addItem = (prevItems: Edge[] | Node[]) => [lastValue, ...prevItems];
     if (checkIfEdge(lastValue)) {
-      const filterEdges = (edge: Edge) => edge.id !== lastValue.id;
-
       if (lastValue.undoType === UNDO_ACTION_ADDED) {
-        setEdges((edges) => edges.filter(filterEdges));
-        setRedo((prevRedo) => [lastValue, ...prevRedo]);
+        setEdges((edges) => edges.filter(filterUndo));
+        setRedo(addItem);
       } else {
         setEdges((prevEdges) => addEdge(lastValue, prevEdges));
-        setRedo((prevRedo) => [lastValue, ...prevRedo]);
+        setRedo(addItem);
       }
     } else {
-      const filterNodes = (node: Node) => node.id !== lastValue.id;
-
       if (lastValue.undoType === UNDO_ACTION_ADDED) {
-        setNodes((prevNodes) => prevNodes.filter(filterNodes));
-        setRedo((prevRedo) => [lastValue, ...prevRedo]);
+        setNodes((prevNodes) => prevNodes.filter(filterUndo));
+        setRedo(addItem);
       } else {
         setNodes((prevNodes) => [...prevNodes, lastValue]);
-        setRedo((prevRedo) => [lastValue, ...prevRedo]);
+        setRedo(addItem);
       }
     }
   };
@@ -56,15 +46,12 @@ const UndoRedoPanel = () => {
   const onRedo = () => {
     const firstValue = redoValue?.shift();
 
-    if (!firstValue || !isSomething(firstValue)) {
+    if (!isSomething(firstValue)) {
       return;
     }
 
     const filterRedo = (item: Edge | Node) => item.id !== firstValue.id;
-    const addToRedo = (prevItems: Edge[] | Node[]) => [
-      ...prevItems,
-      firstValue,
-    ];
+    const addItem = (prevItems: Edge[] | Node[]) => [...prevItems, firstValue];
 
     if (firstValue.undoType === UNDO_ACTION_DELETED) {
       if (checkIfEdge(firstValue)) {
@@ -74,14 +61,14 @@ const UndoRedoPanel = () => {
       }
     } else {
       if (checkIfEdge(firstValue)) {
-        setEdges((prevEdges) => addToRedo(prevEdges));
+        setEdges((prevEdges) => addItem(prevEdges));
       } else {
-        setNodes((prevNodes) => addToRedo(prevNodes));
+        setNodes((prevNodes) => addItem(prevNodes));
       }
     }
 
     setUndo((prevUndo) => {
-      if (prevUndo.length === 0) {
+      if (!isSomething(prevUndo)) {
         return [firstValue];
       }
       return [...prevUndo, firstValue];
@@ -95,10 +82,10 @@ const UndoRedoPanel = () => {
       key="main-menu-panel"
     >
       <Sidebar />
-      <Button onClick={onUndo} disabled={undoValue && undoValue.length <= 0}>
+      <Button onClick={onUndo} disabled={!isSomething(undoValue)}>
         <UndoIcon />
       </Button>
-      <Button onClick={onRedo} disabled={redoValue && redoValue.length <= 0}>
+      <Button onClick={onRedo} disabled={!isSomething(redoValue)}>
         <RedoIcon />
       </Button>
     </Panel>

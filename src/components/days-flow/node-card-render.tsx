@@ -29,6 +29,7 @@ import NodeCardAddNodeSelect from "./node-card-add-node-select";
 import NodeCardHeader from "./node-card-header";
 import UnconfiguredNode from "./unconfigured-node";
 import { renderContactIcons } from "@/utils/react-flow.utils";
+import { cn } from "@/lib/utils";
 
 type NodeCardRenderProps = {
   data: string;
@@ -55,9 +56,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
 
   const onChangeSelection = useCallback(
     ({ nodes }: { nodes: Node[] }) => {
-      const nodeId = nodes?.map((node) => node?.id);
-
-      if (nodeId && nodeId[0] !== newelyAddedNodeId) {
+      if (nodes?.[0]?.id !== newelyAddedNodeId) {
         setNewlyAddedNodeId("");
       }
     },
@@ -69,7 +68,7 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
   });
 
   useEffect(() => {
-    if (nodes.length > 1) {
+    if (isSomething(nodes)) {
       const { nodes: layoutedNodes, edges: layoutedEdges } =
         getLayoutedElementsDagreOverlap(nodes, edges);
 
@@ -91,9 +90,12 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
 
   return (
     <div
-      className={`w-[350px]  bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 ${
-        isSelfSelected && `border-[1.5px] border-cyan-500`
-      } relative`}
+      className={cn(
+        "w-[350px] bg-white p-3 border border-[#E6E6E6] rounded-xl flex flex-col gap-3 relative",
+        {
+          "border-[1.5px] border-cyan-500": isSelfSelected,
+        }
+      )}
       onClick={(e) => {
         e.stopPropagation();
         onNodeClick();

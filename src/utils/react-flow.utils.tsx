@@ -63,5 +63,10 @@ export const renderContactIcons = (contactTypes: string[] | undefined) => {
   });
 };
 
-export const filterEdgeById = (edges: Edge[], excludeId: string) =>
-  edges.filter((edge) => edge.id !== excludeId);
+export const checkIfEdge = (value: Edge | Node) => {
+  if (Object.prototype.hasOwnProperty.call(value, "targetHandle")) {
+    return true;
+  } else {
+    return false;
+  }
+};

@@ -146,7 +146,7 @@ const FlowNew = (props: ReactFlowProps) => {
         }),
       };
 
-      if (closestTemporaryNodeFound || nodes.length === 0) {
+      if (closestTemporaryNodeFound || !isSomething(nodes)) {
         setNodes((prevNodes) => [...prevNodes, newNode]);
 
         if (closestTemporaryNodeFound) {
@@ -212,7 +212,7 @@ const FlowNew = (props: ReactFlowProps) => {
   );
 
   useEffect(() => {
-    if (temporaryNodesArray && nodes.length > 1) {
+    if (temporaryNodesArray && isSomething(nodes)) {
       const hasTempNode = nodes.some((n) => n.type === TEMP_NODE);
 
       if (hasTempNode) {
@@ -231,11 +231,7 @@ const FlowNew = (props: ReactFlowProps) => {
         (workdflow) => workdflow?.day?.id === selectedWorkflowId
       );
 
-      if (
-        nodesSelected &&
-        isSomething(nodesSelected) &&
-        isSomething(nodesSelected?.day)
-      ) {
+      if (nodesSelected && isSomething(nodesSelected?.day)) {
         const { workflow } = nodesSelected.day;
         setNodes(workflow);
         setAtomId(null);
@@ -246,7 +242,7 @@ const FlowNew = (props: ReactFlowProps) => {
   }, [daysWorkflow, selectedWorkflowId, setAtomId, setNodes]);
 
   useEffect(() => {
-    if (nodes.length > 0) {
+    if (isSomething(nodes)) {
       const nodesConfigured = checkIfNodesConfigured(nodes);
 
       setNodesConfigured(nodesConfigured);
@@ -261,9 +257,9 @@ const FlowNew = (props: ReactFlowProps) => {
   }, [edges, setWorkflowEdges]);
 
   const onDragEnter = useCallback(() => {
-    const tempraryNodes = getTempNodes(nodes);
-    const tempNodes = tempraryNodes.map((node) => node.tempNode);
-    const tempEdges = tempraryNodes.map((node) => node.tempEdge);
+    const tempraryNodesAndEdges = getTempNodes(nodes);
+    const tempNodes = tempraryNodesAndEdges.map((node) => node.tempNode);
+    const tempEdges = tempraryNodesAndEdges.map((edge) => edge.tempEdge);
     setNodes((prevNodes) => [...prevNodes, ...tempNodes]);
     setEdges((prevEdges) => [...prevEdges, ...tempEdges]);
     setTemporaryNodes([...tempNodes]);
@@ -305,7 +301,7 @@ const FlowNew = (props: ReactFlowProps) => {
       <UndoRedoPanel />
       <ZoomPanel />
       <VidewTogglePanel />
-      {nodes.length === 0 && <AddInitialNode />}
+      {!isSomething(nodes) && <AddInitialNode />}
     </>
   );
 };

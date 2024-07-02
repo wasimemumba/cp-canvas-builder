@@ -6,6 +6,7 @@ import {
   undoAtom,
 } from "@/store/workflow-atoms";
 import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback } from "react";
 
 import { BreadCrumbIcon } from "../../utils/days-flow-icons";
 import {
@@ -22,6 +23,17 @@ const DaysMenu = () => {
   const setUndo = useSetAtom(undoAtom);
   const setRedo = useSetAtom(redoAtom);
   const setAtomId = useSetAtom(nodeIdAtom);
+
+  const onDayClick = useCallback(
+    (dayId: string) => {
+      setDaysWorkflow(dayId);
+      setUndo([]);
+      setRedo([]);
+      setAtomId(null);
+    },
+    [setAtomId, setDaysWorkflow, setRedo, setUndo]
+  );
+
   return (
     <Menubar asChild>
       <MenubarMenu>
@@ -34,12 +46,7 @@ const DaysMenu = () => {
             <MenubarItem
               key={daywork?.day?.id}
               className="cursor-pointer focus:bg-gray-300 rounded-[5px] text-[#2A2D2E] text-sm"
-              onClick={() => {
-                setDaysWorkflow(daywork?.day?.id);
-                setUndo([]);
-                setRedo([]);
-                setAtomId(null);
-              }}
+              onClick={() => onDayClick(daywork?.day?.id)}
             >
               Day {daywork?.day?.dayValue}
             </MenubarItem>

@@ -260,7 +260,7 @@ const NodeConfigurationForm = () => {
           )}
         />
 
-        {contactType?.length > 0 && (
+        {isSomething(contactType) && (
           <FormField
             control={form.control}
             name="message"

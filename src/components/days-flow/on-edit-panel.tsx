@@ -16,15 +16,10 @@ const OnEditPanel = () => {
       (workdflow) => workdflow?.day?.id === selectedWorkflowId
     );
 
-    if (
-      nodesSelected &&
-      isSomething(nodesSelected?.day) &&
-      isSomething(nodesSelected)
-    ) {
+    if (nodesSelected && isSomething(nodesSelected?.day)) {
       const { workflow } = nodesSelected.day;
       setNodes(workflow || []);
       const edgesTest = edgesEdit;
-
       setEdges(edgesTest || []);
     } else {
       setNodes([]);

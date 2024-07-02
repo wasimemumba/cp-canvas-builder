@@ -56,7 +56,7 @@ const UnconfiguredNode = (props: UnconfiguredNodeProps) => {
         (workflow) => workflow?.day?.id === selectedWorkflowId
       );
 
-      if (isSomething(getworkspace)) {
+      if (getworkspace && isSomething(getworkspace?.day?.workflow)) {
         getworkspace.day.workflow = updatedNodes;
       }
 

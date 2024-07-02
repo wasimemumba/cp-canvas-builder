@@ -32,7 +32,7 @@ const DaysFlow = () => {
       <div
         className={cn(
           "h-[40px] flex flex-row justify-between items-center p-4 bg-white z-10 fixed top-0 w-full",
-          isSomething(nodeAtomId) && "w-[79%] rounded-r-xl"
+          isSomething(nodeAtomId) && "w-[1214px] rounded-r-xl"
         )}
       >
         <TelevoxIcon />

@@ -5,6 +5,7 @@ import {
   NODE_ICONS_TYPE_MAPPER,
   getHandle,
   getIcon,
+  isSomething,
 } from "@/utils/days-flow-constants";
 
 export const formSchema = z.object({
@@ -76,7 +77,7 @@ export const getUpdatedNodes = (
         nodeDescription: values?.message,
         nodeType: values?.nodeType,
         contactType: values?.contactType,
-        isConfigured: values?.message?.length > 0,
+        isConfigured: isSomething(values?.message?.length),
         nodeIcon: getIcon(
           values?.nodeType as keyof typeof NODE_ICONS_TYPE_MAPPER
         ),

@@ -69,7 +69,7 @@ export const NODES_CARD_WITH_TYPE: NODE_CARD_TYPE[] = [
   },
 ];
 
-export const isSomething = (data: unknown) => {
+export const isSomething = (data: unknown): boolean => {
   if (data === null || data === undefined) return false;
 
   if (typeof data === "number") return true;
@@ -103,11 +103,11 @@ export const getEdgesBySource = (edgesArray: Edge[], nodeId: string) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const extractTargets = (graph: any[], source: string): string[] => {
   const targets: string[] = [];
-  for (const edge of graph) {
+  graph.forEach((edge) => {
     if (edge.source === source) {
       targets.push(edge.target);
     }
-  }
+  });
   return targets;
 };
 
@@ -115,9 +115,9 @@ export const extractTargets = (graph: any[], source: string): string[] => {
 export const processGraph = (graph: any[], source: string): string[] => {
   const targets = extractTargets(graph, source);
   const result: string[] = [];
-  for (const target of targets) {
+  targets.forEach((target) => {
     result.push(...processGraph(graph, target));
-  }
+  });
   return [...targets, ...result];
 };
 
@@ -139,7 +139,7 @@ export const findClosestNode = (
   let closestObject = null;
   let minDistance = Number.MAX_SAFE_INTEGER;
 
-  for (const obj of array) {
+  array.forEach((obj) => {
     const distanceX = Math.abs(obj.position.x - targetPosition.x);
     const distanceY = Math.abs(obj.position.y - targetPosition.y);
     const totalDistance = distanceX + distanceY;
@@ -148,7 +148,7 @@ export const findClosestNode = (
       closestObject = obj;
       minDistance = totalDistance;
     }
-  }
+  });
 
   return closestObject || null;
 };
