@@ -1,9 +1,10 @@
-import { Panel, useReactFlow } from "reactflow";
-import { Button } from "../ui/button";
 import { daysWorkflowDataAtom, selectedDayAtom } from "@/store/workflow-atoms";
-import { useAtomValue, useSetAtom } from "jotai";
 import { edgesEdit, editTest } from "@/utils/temp-edit-test";
-import { isSomething } from "../../utils/days-flow-constants";
+import { useAtomValue, useSetAtom } from "jotai";
+import { Panel, useReactFlow } from "reactflow";
+
+import { isSomething } from "../../utils/react-flow.utils";
+import { Button } from "../ui/button";
 
 const OnEditPanel = () => {
   const { setEdges, setNodes } = useReactFlow();

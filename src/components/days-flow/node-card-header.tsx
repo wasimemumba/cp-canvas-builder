@@ -4,12 +4,11 @@ import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { NodeTypes, useReactFlow } from "reactflow";
 
+import { isSomething, processGraph } from "@/utils/react-flow.utils";
 import {
   INITIAL_NODE,
   NODE_ICONS_MAPPER,
   UNDO_ACTION_DELETED,
-  isSomething,
-  processGraph,
 } from "../../utils/days-flow-constants";
 import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
 import { Button } from "../ui/button";

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import {
   daysWorkflowDataAtom,
   nodeIdAtom,
@@ -7,23 +6,27 @@ import {
   undoAtom,
   workflowEdgesAtom,
 } from "@/store/workflow-atoms";
-import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { Edge, useNodes, useReactFlow } from "reactflow";
-import {
-  checkIfNodesConfigured,
-  getParsedNodeData,
-  isSomething,
-} from "../../utils/days-flow-constants";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   formSchema,
   getUpdatedNodes,
   handleCheckboxChange,
   items,
 } from "@/utils/day-flow-form.utils";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { Edge, useNodes, useReactFlow } from "reactflow";
+import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
+
+import {
+  checkIfNodesConfigured,
+  getParsedNodeData,
+  isSomething,
+} from "../../utils/react-flow.utils";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -33,11 +36,9 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
+import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { v4 as uuidv4 } from "uuid";
 import NodeConfigurationFormBtns from "./node-configuration-form-btns";
 import NodeConfigurationFormSelectItems from "./node-configuration-form-select-items";
 

@@ -3,12 +3,20 @@ import { useCallback } from "react";
 import { Handle, NodeTypes, Position, useReactFlow } from "reactflow";
 
 import {
-  BOTH_HANDLE,
-  SOURCE_HANDLE,
-  TARGET_HANDLE,
+  daysWorkflowDataAtom,
+  newNodeId,
+  selectedDayAtom,
+  undoAtom,
+} from "@/store/workflow-atoms";
+import {
   isSomething,
   updateNewlyAddedNodeTitle,
   updateNewlyAddedNodeType,
+} from "@/utils/react-flow.utils";
+import {
+  BOTH_HANDLE,
+  SOURCE_HANDLE,
+  TARGET_HANDLE,
 } from "../../utils/days-flow-constants";
 import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
 import { Input } from "../ui/input";
@@ -19,12 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  daysWorkflowDataAtom,
-  newNodeId,
-  selectedDayAtom,
-  undoAtom,
-} from "@/store/workflow-atoms";
 
 type UnconfiguredNodeProps = {
   parsedData: NodeTypes & NODE_CARD_TYPE;

@@ -3,9 +3,9 @@ import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
 import { Panel, useReactFlow, useViewport } from "reactflow";
 
-import { valueToPercentage } from "../../utils/days-flow-constants";
-import { MinusIcon, PlusIcon } from "../../utils/days-flow-icons";
 import { cn } from "@/lib/utils";
+import { MinusIcon, PlusIcon } from "../../utils/days-flow-icons";
+import { valueToPercentage } from "../../utils/react-flow.utils";
 import { Button } from "../ui/button";
 
 const ZoomPanel = () => {

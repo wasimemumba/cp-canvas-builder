@@ -1,15 +1,15 @@
+import { redoAtom, undoAtom } from "@/store/workflow-atoms";
+import { checkIfEdge, isSomething } from "@/utils/react-flow.utils";
+import { useAtom } from "jotai";
 import { Edge, Node, Panel, addEdge, useReactFlow } from "reactflow";
-import Sidebar from "./sidebar";
-import { Button } from "../ui/button";
-import { RedoIcon, UndoIcon } from "../../utils/days-flow-icons";
+
 import {
   UNDO_ACTION_ADDED,
   UNDO_ACTION_DELETED,
-  isSomething,
 } from "../../utils/days-flow-constants";
-import { redoAtom, undoAtom } from "@/store/workflow-atoms";
-import { useAtom } from "jotai";
-import { checkIfEdge } from "@/utils/react-flow.utils";
+import { RedoIcon, UndoIcon } from "../../utils/days-flow-icons";
+import { Button } from "../ui/button";
+import Sidebar from "./sidebar";
 
 const UndoRedoPanel = () => {
   const { setEdges, setNodes } = useReactFlow();

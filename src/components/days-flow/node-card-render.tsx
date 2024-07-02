@@ -16,20 +16,22 @@ import {
   useReactFlow,
 } from "reactflow";
 
+import { cn } from "@/lib/utils";
+import {
+  getParsedNodeData,
+  isSomething,
+  renderContactIcons,
+} from "@/utils/react-flow.utils";
 import { getLayoutedElementsDagreOverlap } from "../../utils/dagree-layout";
 import {
   BOTH_HANDLE,
   DETAILED_VIEW,
   SOURCE_HANDLE,
   TARGET_HANDLE,
-  getParsedNodeData,
-  isSomething,
 } from "../../utils/days-flow-constants";
 import NodeCardAddNodeSelect from "./node-card-add-node-select";
 import NodeCardHeader from "./node-card-header";
 import UnconfiguredNode from "./unconfigured-node";
-import { renderContactIcons } from "@/utils/react-flow.utils";
-import { cn } from "@/lib/utils";
 
 type NodeCardRenderProps = {
   data: string;

@@ -1,8 +1,9 @@
-import { DragEvent } from "react";
-import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
-import { NODE_ICONS_MAPPER } from "../../utils/days-flow-constants";
-import { useSetAtom } from "jotai";
 import { onDragging } from "@/store/workflow-atoms";
+import { useSetAtom } from "jotai";
+import { DragEvent } from "react";
+
+import { NODE_ICONS_MAPPER } from "../../utils/days-flow-constants";
+import { NODE_CARD_TYPE } from "../../utils/types/days-flow.types";
 
 type NodeCardPropType = {
   nodeCardDetails: NODE_CARD_TYPE;

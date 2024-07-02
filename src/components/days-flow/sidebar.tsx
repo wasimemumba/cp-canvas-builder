@@ -6,10 +6,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Toggle } from "@/components/ui/toggle";
-import NodeCard from "./node-card";
 import { nodesConfigured } from "@/store/workflow-atoms";
-import { useAtomValue } from "jotai";
 import { NODES_CARD_WITH_TYPE } from "@/utils/days-flow-constants";
+import { useAtomValue } from "jotai";
+
+import NodeCard from "./node-card";
 
 const Sidebar = () => {
   const allNodesConfigured = useAtomValue(nodesConfigured);

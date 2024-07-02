@@ -3,6 +3,7 @@ import { currentViewAtom, nodeIdAtom } from "@/store/workflow-atoms";
 import { DETAILED_VIEW, SUMMARY_VIEW } from "@/utils/days-flow-constants";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Panel } from "reactflow";
+
 import { Button } from "../ui/button";
 
 const VidewTogglePanel = () => {

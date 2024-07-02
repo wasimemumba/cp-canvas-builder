@@ -10,7 +10,13 @@ import {
   undoAtom,
   workflowEdgesAtom,
 } from "@/store/workflow-atoms";
-import { getTempNodes } from "@/utils/react-flow.utils";
+import {
+  checkIfNodesConfigured,
+  findClosestNode,
+  getTempNodes,
+  getTempNodesForConfiguredNodes,
+  isSomething,
+} from "@/utils/react-flow.utils";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DragEvent, useCallback, useEffect, useState } from "react";
 import ReactFlow, {
@@ -30,13 +36,9 @@ import {
   TEMP_EDGE,
   TEMP_NODE,
   UNDO_ACTION_ADDED,
-  checkIfNodesConfigured,
   edgeTypes,
-  findClosestNode,
-  getTempNodesForConfiguredNodes,
   initialEdges,
   initialNodes,
-  isSomething,
   nodeTypes,
 } from "../../utils/days-flow-constants";
 import AddInitialNode from "./add-initial-node";

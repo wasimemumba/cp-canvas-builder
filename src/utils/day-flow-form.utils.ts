@@ -1,12 +1,11 @@
+import { getHandle, getIcon, isSomething } from "@/utils/react-flow.utils";
 import { Node } from "reactflow";
 import { z } from "zod";
+
 import {
   NODE_HANDLE_MAPPER_BY_TYPE,
   NODE_ICONS_TYPE_MAPPER,
-  getHandle,
-  getIcon,
-  isSomething,
-} from "@/utils/days-flow-constants";
+} from "./days-flow-constants";
 
 export const formSchema = z.object({
   nodeType: z.string({
