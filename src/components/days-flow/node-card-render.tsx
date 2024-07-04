@@ -120,7 +120,9 @@ const NodeCardRender = (props: NodeProps<NodeCardRenderProps>) => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="flex flex-row gap-1 justify-start items-center">
-                      {renderContactIcons(contactType)}
+                      <div className="flex flex-row flex-1 gap-1">
+                        {renderContactIcons(contactType)}
+                      </div>
                       <p className="text-xs text-[#777] truncate">
                         {nodeDescription}
                         ...

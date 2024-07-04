@@ -1,14 +1,14 @@
 import { Edge, Node } from "reactflow";
 
-export type NodeIconType = "dialogue" | "message" | "question" | "chat";
-export type HandleType = "both" | "source" | "target";
+export type NODE_ICON_TYPE = "dialogue" | "message" | "question" | "chat";
+export type HANDLE_TYPE = "both" | "source" | "target";
 
 export type NODE_CARD_TYPE = {
-  nodeIcon: NodeIconType;
+  nodeIcon: NODE_ICON_TYPE;
   nodeTitle: string;
   nodeDescription: string;
   nodeType: string;
-  handle: HandleType;
+  handle: HANDLE_TYPE;
   dayId?: string;
   undoType?: string;
   score?: string;

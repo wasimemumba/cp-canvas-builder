@@ -34,7 +34,7 @@ const TempNode = (props: NodeProps) => {
         {data}
       </p>
 
-      <Handle type="target" position={Position?.Top} />
+      <Handle type="target" position={Position.Top} />
     </div>
   );
 };

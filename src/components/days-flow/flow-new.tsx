@@ -168,7 +168,7 @@ const FlowNew = (props: ReactFlowProps) => {
         setRedo([]);
 
         const getworkspace = daysWorkflow?.find(
-          (workflow) => workflow?.day?.id === selectedWorkflowId
+          (workflow) => workflow.day?.id === selectedWorkflowId
         );
 
         if (getworkspace && isSomething(getworkspace)) {
@@ -230,7 +230,7 @@ const FlowNew = (props: ReactFlowProps) => {
   useEffect(() => {
     if (isSomething(daysWorkflow)) {
       const nodesSelected = daysWorkflow?.find(
-        (workdflow) => workdflow?.day?.id === selectedWorkflowId
+        (workdflow) => workdflow.day?.id === selectedWorkflowId
       );
 
       if (nodesSelected && isSomething(nodesSelected?.day)) {
