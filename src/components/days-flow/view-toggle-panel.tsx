@@ -16,7 +16,7 @@ const VidewTogglePanel = () => {
       className={cn(
         "bg-white rounded-[5px] flex flex-row justify-start items-center mt-14 shadow-xl",
         {
-          "mr-[324px]": nodeAtomId,
+          "mr-[21%]": nodeAtomId,
         }
       )}
       key="view-panel"

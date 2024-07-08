@@ -84,7 +84,12 @@ const NodeConfigurationForm = () => {
     },
   });
 
-  const { handleSubmit, control, getValues } = form;
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { isValid },
+  } = form;
   const { contactType } = getValues();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -294,7 +299,7 @@ const NodeConfigurationForm = () => {
           />
         )}
 
-        <NodeConfigurationFormBtns />
+        <NodeConfigurationFormBtns isValid={isValid} />
       </form>
     </Form>
   );
